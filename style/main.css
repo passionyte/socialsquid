@@ -1,0 +1,67 @@
+.left {
+    float: left;
+    width: 50%;
+    height: 100%;
+    background-color: whitesmoke;
+}
+
+.title {
+    font-family:'Courier New', Courier, monospace;
+    font-size: xx-large;
+    width: 100%;
+    font-weight: bolder;
+}
+
+.text {
+    font-family:'Courier New', Courier, monospace;
+    font-size: medium;
+}
+
+.bigtext {
+    font-family:'Courier New', Courier, monospace;
+    font-weight:bold;
+    font-size: large;
+}
+
+.thumbnail {
+    background-color: white;
+    border-color: lightgray;
+    border-radius: 20px;
+    width: 400px;
+    height: 150px;
+    display: block;
+    text-align: center;
+    font-family: 'Courier New', Courier, monospace;
+    font-size: xx-large;
+    font-weight: bolder;
+    padding-top: 100px;
+    text-wrap: pretty;
+}
+
+.dislikebar {
+    background-color: red;
+    width: 200px;
+    height: 4px;
+}
+
+.likebar {
+    background-color: green;
+    height: 100%;
+    width: 200px;
+    float: left;
+}
+
+.ratings {
+    width: 200px;
+    font-family: 'Courier New', Courier, monospace;
+    font-size: small;
+}
+
+.disliketext {
+    float: right;
+}
+
+.stats {
+    padding-top: 50px;
+    padding-left: 200px;
+}

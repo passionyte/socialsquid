@@ -1,0 +1,53 @@
+<html>
+
+<head>
+    <title>Unfinished video uploading game</title>
+    <script src="scripts/game.js" defer></script>
+    <link rel="stylesheet" href="./style/main.css">
+</head>
+
+
+<body>
+    <div class="left">
+        <a class="title">Unfinished video uploading game</a> <br> <hr>
+
+        <div>
+            <a class="bigtext">Channel Details</a> <br>
+            <a class="text" id="totalsubs">0 Subscribers</a> <br>
+            <a class="text" id="totalviews">0 Views</a> <br>
+            <a class="text" id="totalvids">0 Videos</a>
+        </div> <hr>
+
+        <div>
+            <a class="bigtext">Video Details</a> <br>
+            <div id="upload">
+                <button class="upload" id="uploadbutton">
+                    Upload video
+                </button>
+                <input id="uploadtitle" name="title"></input>
+            </div>
+            <div id="video" hidden>
+                <br>
+                <div id="thumb">
+                    <a class="thumbnail" id="thumbnail">Video thumbnail</a>
+                </div> <br>
+                <a class="bigtext" id="vidtitle">Video Title</a> <br>
+
+                <div class="stats">
+                    <a class="text" id="vidviews">0 views</a> <br>
+                    <div class="dislikebar">
+                        <div class="likebar" id="likebar"></div>
+                    </div>
+                    <div class="ratings">
+                        <a class="liketext" id="likes">0</a>
+                        <a class="disliketext" id="dislikes">0</a>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+
+    </div>
+</body>
+
+</html>
