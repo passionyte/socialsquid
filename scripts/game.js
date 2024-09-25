@@ -5,6 +5,10 @@ const uploadui = document.getElementById("upload")
 const uploadbutton = document.getElementById("uploadbutton")
 const uploadtitle = document.getElementById("uploadtitle")
 
+// Cooldown
+const cooldownui = document.getElementById("cooldown")
+const timeout = document.getElementById("timeout")
+
 // Video
 const videoui = document.getElementById("video")
 const vidtitle = document.getElementById("vidtitle")
@@ -18,6 +22,10 @@ const dislikes = document.getElementById("dislikes")
 const totalsubs = document.getElementById("totalsubs")
 const totalviews = document.getElementById("totalviews")
 const totalvids = document.getElementById("totalvids")
+const playbutton = document.getElementById("playbutton")
+
+// Shop
+const shopui = document.getElementById("shop")
 
 // PLAYER VARIABLES
 let views = 0
@@ -39,11 +47,11 @@ let cooldown = 30
 // FUNCTIONS
 function ready() {
     uploadui.hidden = false
+    cooldownui.hidden = true
 }
 
 function upload() {
     uploadedat = performance.now()
-    console.log(uploadedat)
 
     if (interval) {
         clearInterval(interval)
@@ -51,6 +59,7 @@ function upload() {
     }
 
     const title = uploadtitle.value
+    uploadtitle.value = ""
 
     views += vidviews
     videos++
@@ -60,6 +69,7 @@ function upload() {
     viddislikes = 0
 
     uploadui.hidden = true
+    cooldownui.hidden = false
 
     videoui.hidden = false
     vidtitle.innerText = title
@@ -72,6 +82,8 @@ function upload() {
 }
 
 function step() {
+    timeout.innerText = `Bandwidth timed out: ${(cooldown - Math.floor(((performance.now() / 1000) - (uploadedat / 1000))))} seconds`
+
     totalsubs.innerText = `${subs} Subscribers`
     totalviews.innerText = `${views} Views`
     totalvids.innerText = `${videos} Videos`
@@ -80,16 +92,25 @@ function step() {
     likes.innerText = vidlikes
     dislikes.innerText = viddislikes
 
-    likebar.style.width = ((vidlikes / (vidlikes + viddislikes)) * 200)
+    const ratings = (vidlikes + viddislikes)
+
+    likebar.style.width = ((ratings > 0) && ((vidlikes / ratings) * 200)) || 0
+
+    if (subs >= 1000 && shopui.hidden) {
+        shopui.hidden = false
+    }
+    if (subs >= 100000) {
+        playbutton.src = "images/" + (((subs >= 100000000) && "reddiamond") || ((subs >= 50000000) && "ruby") || ((subs >= 10000000) && "diamond") || ((subs >= 1000000) && "gold") || ((subs >= 100000) && "silver")) + ".png"
+    }
 }
 
 function tick() {
     if ((performance.now() - uploadedat) < (vidlifetime * 1000)) {
         if (Math.random() < 0.9) {
-            vidviews += (Math.floor(((subs * Math.random()) / 16)) + 1)
+            vidviews += (Math.floor(((subs * Math.random()) / 32)) + 1)
         }
         if (Math.random() < 0.1) {
-            subs += ((Math.floor(((subs * Math.random()) / 64)) + 1))
+            subs += ((Math.floor(((subs * Math.random()) / 96)) + 1))
         }
         if (Math.random() < 0.15) {
             vidlikes += ((Math.floor(((vidviews + subs) * Math.random()) / 600) + 1))
