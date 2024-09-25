@@ -72,3 +72,20 @@
     background-color: whitesmoke;
     width: 40%;
 }
+
+.upgrade {
+    width: 50%;
+    height: 80px;
+    background-color: white;
+    font-family:'Courier New', Courier, monospace
+}
+
+.upgicon {
+    width: 60px;
+    height: 60px;
+    float: left
+}
+
+.upgtitle {
+    padding-left: 20px;
+}

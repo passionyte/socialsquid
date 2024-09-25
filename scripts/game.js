@@ -26,6 +26,7 @@ const playbutton = document.getElementById("playbutton")
 
 // Shop
 const shopui = document.getElementById("shop")
+const upgdummy = document.getElementById("upgdummy")
 
 // PLAYER VARIABLES
 let views = 0
