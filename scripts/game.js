@@ -99,7 +99,7 @@ function step() {
 
     const cdwait = (cooldown - Math.floor(((performance.now() / 1000) - (uploadedat / 1000))))
 
-    document.title = ((!cooldownui.hidden) && cdwait) || "" + `SocialSquid - ${subs} subscribers`
+    document.title = (((!cooldownui.hidden) && "(" + cdwait + ") ") || "") + `SocialSquid - ${subs} subscribers`
 
     if (!cooldownui.hidden) {
         timeout.innerText = `Bandwidth timed out: ${cdwait} seconds`
