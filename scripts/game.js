@@ -85,7 +85,6 @@ function upload() {
 }
 
 function step() {
-
     totalsubs.innerText = `${subs} Subscribers`
     totalviews.innerText = `${views} Views`
     totalvids.innerText = `${videos} Videos`
@@ -98,8 +97,12 @@ function step() {
 
     likebar.style.width = ((ratings > 0) && ((vidlikes / ratings) * 200)) || 0
 
+    const cdwait = (cooldown - Math.floor(((performance.now() / 1000) - (uploadedat / 1000))))
+
+    document.title = ((!cooldownui.hidden) && cdwait) || "" + `SocialSquid - ${subs} subscribers`
+
     if (!cooldownui.hidden) {
-        timeout.innerText = `Bandwidth timed out: ${(cooldown - Math.floor(((performance.now() / 1000) - (uploadedat / 1000))))} seconds`
+        timeout.innerText = `Bandwidth timed out: ${cdwait} seconds`
     }
     if (subs >= 1000 && shopui.hidden) {
         shopui.hidden = false
