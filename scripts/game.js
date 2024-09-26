@@ -1,3 +1,5 @@
+// Written by Passionyte
+
 // UI ELEMENTS
 
 // Upload
@@ -83,7 +85,6 @@ function upload() {
 }
 
 function step() {
-    timeout.innerText = `Bandwidth timed out: ${(cooldown - Math.floor(((performance.now() / 1000) - (uploadedat / 1000))))} seconds`
 
     totalsubs.innerText = `${subs} Subscribers`
     totalviews.innerText = `${views} Views`
@@ -97,6 +98,9 @@ function step() {
 
     likebar.style.width = ((ratings > 0) && ((vidlikes / ratings) * 200)) || 0
 
+    if (!cooldownui.hidden) {
+        timeout.innerText = `Bandwidth timed out: ${(cooldown - Math.floor(((performance.now() / 1000) - (uploadedat / 1000))))} seconds`
+    }
     if (subs >= 1000 && shopui.hidden) {
         shopui.hidden = false
     }
