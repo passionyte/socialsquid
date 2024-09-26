@@ -111,6 +111,7 @@ function step() {
         playbutton.src = "images/" + (((subs >= 100000000) && "reddiamond") || ((subs >= 50000000) && "ruby") || ((subs >= 10000000) && "diamond") || ((subs >= 1000000) && "gold") || ((subs >= 100000) && "silver")) + ".png"
     }
 }
+step()
 
 function tick() {
     if ((performance.now() - uploadedat) < (vidlifetime * 1000)) {
