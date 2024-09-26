@@ -116,10 +116,10 @@ step()
 function tick() {
     if ((performance.now() - uploadedat) < (vidlifetime * 1000)) {
         if (Math.random() < 0.9) {
-            vidviews += (Math.floor(((subs * Math.random()) / 32)) + 1)
+            vidviews += (Math.floor((((subs * Math.random()) / 32) + ((vidlikes * Math.random()) / 8))) + 1)
         }
         if (Math.random() < 0.1) {
-            subs += ((Math.floor(((subs * Math.random()) / 96)) + 1))
+            subs += ((Math.floor((((vidviews + subs) * Math.random()) / 96)) + 1))
         }
         if (Math.random() < 0.15) {
             vidlikes += ((Math.floor(((vidviews + subs) * Math.random()) / 600) + 1))
