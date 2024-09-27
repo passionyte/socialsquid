@@ -180,7 +180,7 @@ function load() { // Convert our saved data to a expendible format.. load from l
             vidlikes = data.vidlikes
             viddislikes = data.viddislikes
             uploadedat = data.uploadedat
-            interval = setInterval(tick, (1000 / timescale))
+            interval = setInterval(tick, (1000 / timescale)) // teest
         }
         step()
     }
