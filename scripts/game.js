@@ -182,7 +182,7 @@ function load() { // Convert our saved data to a expendible format.. load from l
             uploadedat = data.uploadedat
             interval = setInterval(tick, (1000 / timescale))
         }
-
+        step()
     }
 }
 
