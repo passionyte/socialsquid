@@ -154,13 +154,13 @@ function save() { // Convert our save data to a readable format.. save to localS
         }
 
         localStorage.setItem("save", JSON.stringify(data))
-        console.log("Saved user data")
+        console.log("Saved user data.")
     }
 }
 setTimeout(save, (updaterate * 1000))
 
 function load() { // Convert our saved data to a expendible format.. load from localStorage
-    const data = localStorage.getItem("save")
+    let data = localStorage.getItem("save")
 
     if (data) {
         data = JSON.parse(data)
@@ -178,7 +178,7 @@ function load() { // Convert our saved data to a expendible format.. load from l
         if (data.vidname) {
             videoui.hidden = false
             vidtitle.innerText = data.vidname
-            thumb.innerText = data.vidname        
+            thumb.innerText = data.vidname
 
             vidviews = data.vidviews
             vidlikes = data.vidlikes
@@ -187,7 +187,7 @@ function load() { // Convert our saved data to a expendible format.. load from l
             interval = setInterval(tick, (1000 / timescale))
         }
         step()
-        console.log("Loaded user data")
+        console.log("Loaded user data.")
     }
 }
 load()
