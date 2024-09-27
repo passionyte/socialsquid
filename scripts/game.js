@@ -146,7 +146,6 @@ function save() { // Convert our save data to a readable format.. save to localS
             data.vidviews = vidviews
             data.vidlikes = vidlikes
             data.viddislikes = viddislikes
-            data.uploadedat = (performance.now() - uploadedat)
         }
 
         if (!cooldownui.hidden) {
@@ -183,7 +182,7 @@ function load() { // Convert our saved data to a expendible format.. load from l
             vidviews = data.vidviews
             vidlikes = data.vidlikes
             viddislikes = data.viddislikes
-            uploadedat = data.uploadedat
+            uploadedat = (performance.now() - (data.cooldownleft * 1000))
             interval = setInterval(tick, (1000 / timescale))
         }
         step()
