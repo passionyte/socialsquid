@@ -46,6 +46,7 @@ let interval
 let timescale = 1
 let vidlifetime = (5 * 60)
 let cooldown = 30
+let updaterate = 60
 
 // FUNCTIONS
 function ready() {
@@ -133,26 +134,28 @@ function tick() {
 }
 
 function save() { // Convert our save data to a readable format.. save to localStorage
-    let data = {}
+    if (subs > 0) { // Storage is valuable...
+        let data = {}
 
-    data.subs = subs
-    data.views = views
-    data.videos = videos
+        data.subs = subs
+        data.views = views
+        data.videos = videos
 
-    if (!videoui.hidden) {
-        data.vidname = uploadtitle.value
-        data.vidviews = vidviews
-        data.vidlikes = vidlikes
-        data.viddislikes = viddislikes
-        data.uploadedat = (performance.now() - uploadedat)
+        if (!videoui.hidden) {
+            data.vidname = uploadtitle.value
+            data.vidviews = vidviews
+            data.vidlikes = vidlikes
+            data.viddislikes = viddislikes
+            data.uploadedat = (performance.now() - uploadedat)
+        }
+
+        if (!cooldownui.hidden) {
+            data.cooldownleft = (cooldown - Math.floor(((performance.now() / 1000) - (uploadedat / 1000))))
+        }
+
+        localStorage.setItem("save", JSON.stringify(data))
+        console.log("Saved user data")
     }
-
-    if (!cooldownui.hidden) {
-        data.cooldownleft = (cooldown - Math.floor(((performance.now() / 1000) - (uploadedat / 1000))))
-    }
-
-    localStorage.setItem("save", JSON.stringify(data))
-    console.log("Saved user data")
 }
 
 function load() { // Convert our saved data to a expendible format.. load from localStorage
@@ -180,11 +183,13 @@ function load() { // Convert our saved data to a expendible format.. load from l
             vidlikes = data.vidlikes
             viddislikes = data.viddislikes
             uploadedat = data.uploadedat
-            interval = setInterval(tick, (1000 / timescale)) // teest
+            interval = setInterval(tick, (1000 / timescale))
         }
         step()
+        console.log("Loaded user data")
     }
 }
+load()
 
 // EVENT LISTENERS
 uploadbutton.addEventListener("click", upload)
