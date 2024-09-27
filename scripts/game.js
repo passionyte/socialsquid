@@ -132,5 +132,59 @@ function tick() {
     }  
 }
 
+function save() { // Convert our save data to a readable format.. save to localStorage
+    let data = {}
+
+    data.subs = subs
+    data.views = views
+    data.videos = videos
+
+    if (!videoui.hidden) {
+        data.vidname = uploadtitle.value
+        data.vidviews = vidviews
+        data.vidlikes = vidlikes
+        data.viddislikes = viddislikes
+        data.uploadedat = (performance.now() - uploadedat)
+    }
+
+    if (!cooldownui.hidden) {
+        data.cooldownleft = (cooldown - Math.floor(((performance.now() / 1000) - (uploadedat / 1000))))
+    }
+
+    localStorage.setItem("save", JSON.stringify(data))
+    console.log("Saved user data")
+}
+
+function load() { // Convert our saved data to a expendible format.. load from localStorage
+    const data = localStorage.getItem("save")
+
+    if (data) {
+        data = JSON.parse(data)
+
+        subs = data.subs
+        views = data.views
+        videos = data.videos
+
+        if (data.cooldownleft) {
+            uploadui.hidden = true
+            cooldownui.hidden = false
+
+            setTimeout(ready, (data.cooldownleft * 1000))
+        }
+        if (data.vidname) {
+            videoui.hidden = false
+            vidtitle.innerText = data.vidname
+            thumb.innerText = data.vidname        
+
+            vidviews = data.vidviews
+            vidlikes = data.vidlikes
+            viddislikes = data.viddislikes
+            uploadedat = data.uploadedat
+            interval = setInterval(tick, (1000 / timescale))
+        }
+
+    }
+}
+
 // EVENT LISTENERS
 uploadbutton.addEventListener("click", upload)
