@@ -41,7 +41,6 @@ let vidlikes = 0
 let viddislikes = 0
 let vidlife = 0
 let vidcooldown = 0
-let uploadedat = 0
 let interval
 
 // GAME TUNING
@@ -57,8 +56,6 @@ function ready() {
 }
 
 function upload() {
-    uploadedat = performance.now()
-
     if (interval) {
         clearInterval(interval)
         interval = null
