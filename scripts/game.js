@@ -74,6 +74,7 @@ function upload() {
     vidlikes = 0
     viddislikes = 0
     vidlife = vidlifetime
+    vidcooldown = cooldown
 
     uploadui.hidden = true
     cooldownui.hidden = false
