@@ -143,8 +143,10 @@ function save() { // Convert our save data to a readable format.. save to localS
         data.subs = subs
         data.views = views
         data.videos = videos
+        data.video = false
 
         if (!videoui.hidden) {
+            data.video = true
             data.vidname = uploadtitle.value
             data.vidviews = vidviews
             data.vidlikes = vidlikes
@@ -178,7 +180,7 @@ function load() { // Convert our saved data to a expendible format.. load from l
 
             setTimeout(ready, (data.vidcooldown * 1000))
         }
-        if (data.vidname) {
+        if (data.video) {
             videoui.hidden = false
             vidtitle.innerText = data.vidname
             thumb.innerText = data.vidname
