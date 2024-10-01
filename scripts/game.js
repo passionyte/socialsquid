@@ -174,11 +174,11 @@ function load() { // Convert our saved data to a expendible format.. load from l
         views = data.views
         videos = data.videos
 
-        if (data.cooldownleft) {
+        if (data.vidcooldown) {
             uploadui.hidden = true
             cooldownui.hidden = false
 
-            setTimeout(ready, (data.cooldownleft * 1000))
+            setTimeout(ready, (data.vidcooldown * 1000))
         }
         if (data.vidname) {
             videoui.hidden = false
