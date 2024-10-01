@@ -162,7 +162,7 @@ function save() { // Convert our save data to a readable format.. save to localS
         console.log("Saved user data.")
     }
 }
-setTimeout(save, (updaterate * 1000))
+setInterval(save, (updaterate * 1000))
 
 function load() { // Convert our saved data to a expendible format.. load from localStorage
     let data = localStorage.getItem("save")
