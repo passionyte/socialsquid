@@ -39,6 +39,8 @@ let videos = 0
 let vidviews = 0
 let vidlikes = 0
 let viddislikes = 0
+let vidlife = 0
+let vidcooldown = 0
 let uploadedat = 0
 let interval
 
@@ -71,6 +73,7 @@ function upload() {
     vidviews = 0
     vidlikes = 0
     viddislikes = 0
+    vidlife = vidlifetime
 
     uploadui.hidden = true
     cooldownui.hidden = false
@@ -98,12 +101,10 @@ function step() {
 
     likebar.style.width = ((ratings > 0) && ((vidlikes / ratings) * 200)) || 0
 
-    const cdwait = (cooldown - Math.floor(((performance.now() / 1000) - (uploadedat / 1000))))
-
-    document.title = (((!cooldownui.hidden) && "(" + cdwait + ") ") || "") + `SocialSquid - ${subs} subscribers`
+    document.title = (((!cooldownui.hidden) && "(" + vidcooldown + ") ") || "") + `SocialSquid - ${subs} subscribers`
 
     if (!cooldownui.hidden) {
-        timeout.innerText = `Bandwidth timed out: ${cdwait} seconds`
+        timeout.innerText = `Bandwidth timed out: ${vidcooldown} seconds`
     }
     if (subs >= 1000 && shopui.hidden) {
         shopui.hidden = false
@@ -115,7 +116,10 @@ function step() {
 step()
 
 function tick() {
-    if ((performance.now() - uploadedat) < (vidlifetime * 1000)) {
+    if (vidcooldown > 0) {
+        vidcooldown--
+    }
+    if (vidlife > 0) {
         if (Math.random() < 0.9) {
             vidviews += (Math.floor((((subs * Math.random()) / 32) + ((vidlikes * Math.random()) / 8))) + 1)
         }
@@ -128,6 +132,7 @@ function tick() {
         else if (Math.random() < 0.2) {
             viddislikes += ((Math.floor((vidviews * Math.random()) / 600) + 1))
         }
+        vidlife--
     
         step()
     }  
@@ -146,10 +151,11 @@ function save() { // Convert our save data to a readable format.. save to localS
             data.vidviews = vidviews
             data.vidlikes = vidlikes
             data.viddislikes = viddislikes
+            data.vidlife = vidlife
         }
 
         if (!cooldownui.hidden) {
-            data.cooldownleft = (cooldown - Math.floor(((performance.now() / 1000) - (uploadedat / 1000))))
+            data.vidcooldown = vidcooldown
         }
 
         localStorage.setItem("save", JSON.stringify(data))
@@ -182,7 +188,8 @@ function load() { // Convert our saved data to a expendible format.. load from l
             vidviews = data.vidviews
             vidlikes = data.vidlikes
             viddislikes = data.viddislikes
-            uploadedat = (performance.now() - (data.cooldownleft * 1000))
+            vidlife = data.vidlife
+            vidcooldown = data.vidcooldown
             interval = setInterval(tick, (1000 / timescale))
         }
         step()
