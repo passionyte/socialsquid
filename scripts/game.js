@@ -29,11 +29,25 @@ const playbutton = document.getElementById("playbutton")
 // Shop
 const shopui = document.getElementById("shop")
 const upgdummy = document.getElementById("upgdummy")
+const upglist = document.getElementById("upgrades")
 
 // PLAYER VARIABLES
 let views = 0
 let subs = 0
 let videos = 0
+let upgrades = [
+    {Name: "Subscriber Begging", Cost: 10000, Description: "Begging for subscribers raises the chance you get some!", Stat: "subchance", Inc: 0.05, Available: true},
+    {Name: "Smash Like", Cost: 10000, Description: "Asking your viewers to smash the like button will increase your likes!", Stat: "likechance", Inc: 0.05, Available: true},
+    {Name: "Custom Thumbnails", Cost: 100000, Description: "Begin creating custom thumbnails people will actually click!", Stat: "viewmult", Inc: 0.1, Available: true, MinSubs: 10000},
+]
+
+// UPGRADE VARIABLES
+let upgradevars = {
+    "subchance": 0,
+    "likechance": 0,
+    "viewmult": 1,
+}
+let ownedupgrades = []
 
 // VIDEO VARIABLES
 let vidviews = 0
@@ -111,8 +125,12 @@ function step() {
     if (subs >= 100000) {
         playbutton.src = "images/" + (((subs >= 100000000) && "reddiamond") || ((subs >= 50000000) && "ruby") || ((subs >= 10000000) && "diamond") || ((subs >= 1000000) && "gold") || ((subs >= 100000) && "silver")) + ".png"
     }
+
+    if (!shopui.hidden) {
+        updateshop()
+    }
 }
-step()
+// step()
 
 function tick() {
     if (vidcooldown > 0) {
@@ -120,12 +138,12 @@ function tick() {
     }
     if (vidlife > 0) {
         if (Math.random() < 0.9) {
-            vidviews += (Math.floor((((subs * Math.random()) / 32) + ((vidlikes * Math.random()) / 8))) + 1)
+            vidviews += Math.floor((Math.floor((((subs * Math.random()) / 32) + ((vidlikes * Math.random()) / 8))) + 1) * upgradevars.viewmult)
         }
-        if (Math.random() < 0.1) {
+        if (Math.random() < (0.1 + upgradevars.subchance)) {
             subs += ((Math.floor((((vidviews + subs) * Math.random()) / 96)) + 1))
         }
-        if (Math.random() < 0.15) {
+        if (Math.random() < (0.15 + upgradevars.likechance)) {
             vidlikes += ((Math.floor(((vidviews + subs) * Math.random()) / 600) + 1))
         }
         else if (Math.random() < 0.2) {
@@ -145,6 +163,9 @@ function save() { // Convert our save data to a readable format.. save to localS
         data.views = views
         data.videos = videos
         data.video = false
+
+        data.ownedupgrades = ownedupgrades
+        data.upgradevars = upgradevars
 
         if (!videoui.hidden) {
             data.video = true
@@ -191,13 +212,63 @@ function load() { // Convert our saved data to a expendible format.. load from l
             viddislikes = data.viddislikes
             vidlife = data.vidlife
             vidcooldown = data.vidcooldown
+            ownedupgrades = data.ownedupgrades
+            upgradevars = data.upgradevars
             interval = setInterval(tick, (1000 / timescale))
         }
-        step()
         console.log("Loaded user data.")
+        step()
     }
 }
 load()
+
+function appendupgrade(table) {
+    let upg = upgdummy.cloneNode(true)
+
+    upg.id = table.Name
+
+    upg.children[0].src = "images/" + ((table.Icon) && table.Icon || "placeholder") + ".png"
+    upg.children[1].innerText = table.Name + " - " + table.Cost + " views"
+    upg.children[3].innerText = table.Description
+
+    upg.children[5].addEventListener("click", _ => {
+        if (views >= table.Cost) {
+            views -= table.Cost
+            upgradevars[table.Stat] += table.Inc
+
+            ownedupgrades.push(table.Name)
+
+            upglist.removeChild(upg)
+        }
+    })
+
+    upg.hidden = false
+    upglist.appendChild(upg)
+}
+
+function findstring(string, table) {
+    let result
+
+    table.forEach(thing => {
+        if (thing == string) {
+            result = true
+        }
+    })
+
+    return (result)
+}
+
+function updateshop() {
+    upglist.innerHTML = ""
+
+    for (i = 0; (i < upgrades.length); i++) {
+        const upgrade = upgrades[i]
+
+        if (((upgrade.Available) && (!upgrade.MinSubs || (subs >= upgrade.MinSubs))) && (!findstring(upgrade.Name, ownedupgrades))) {
+            appendupgrade(upgrade)
+        }
+    }
+}
 
 // EVENT LISTENERS
 uploadbutton.addEventListener("click", upload)

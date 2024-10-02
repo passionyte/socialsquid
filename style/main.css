@@ -74,18 +74,25 @@
 }
 
 .upgrade {
-    width: 50%;
+    width: 60%;
     height: 80px;
     background-color: white;
-    font-family:'Courier New', Courier, monospace
+    font-family: 'Courier New', Courier, monospace;
+    margin-bottom: 20px;
 }
 
 .upgicon {
     width: 60px;
     height: 60px;
-    float: left
+    float: left;
 }
 
 .upgtitle {
-    padding-left: 20px;
+    margin-left: 20px;
+    font-weight: bold;
+}
+
+.upgdesc {
+    margin-left: 20px;
+    font-size: small
 }
