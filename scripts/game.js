@@ -13,7 +13,7 @@ const timeout = document.getElementById("timeout")
 
 // Video
 const videoui = document.getElementById("video")
-const vidtitle = document.getElementById("vidtitle")
+const vidtitletext = document.getElementById("vidtitle")
 const thumb = document.getElementById("thumbnail")
 const vidviewtext = document.getElementById("vidviews")
 const likebar = document.getElementById("likebar")
@@ -41,6 +41,7 @@ let vidlikes = 0
 let viddislikes = 0
 let vidlife = 0
 let vidcooldown = 0
+let vidtitle = ""
 let interval
 
 // GAME TUNING
@@ -61,7 +62,7 @@ function upload() {
         interval = null
     }
 
-    const title = uploadtitle.value
+    vidtitle = uploadtitle.value
     uploadtitle.value = ""
 
     views += vidviews
@@ -77,8 +78,8 @@ function upload() {
     cooldownui.hidden = false
 
     videoui.hidden = false
-    vidtitle.innerText = title
-    thumb.innerText = title
+    vidtitletext.innerText = vidtitle
+    thumb.innerText = vidtitle
 
     step()
 
@@ -147,7 +148,7 @@ function save() { // Convert our save data to a readable format.. save to localS
 
         if (!videoui.hidden) {
             data.video = true
-            data.vidname = uploadtitle.value
+            data.vidtitle = vidtitle
             data.vidviews = vidviews
             data.vidlikes = vidlikes
             data.viddislikes = viddislikes
@@ -182,8 +183,8 @@ function load() { // Convert our saved data to a expendible format.. load from l
         }
         if (data.video) {
             videoui.hidden = false
-            vidtitle.innerText = data.vidname
-            thumb.innerText = data.vidname
+            vidtitle.innerText = data.vidtitle
+            thumb.innerText = data.vidtitle
 
             vidviews = data.vidviews
             vidlikes = data.vidlikes
