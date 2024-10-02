@@ -183,7 +183,7 @@ function load() { // Convert our saved data to a expendible format.. load from l
         }
         if (data.video) {
             videoui.hidden = false
-            vidtitle.innerText = data.vidtitle
+            vidtitletext.innerText = data.vidtitle
             thumb.innerText = data.vidtitle
 
             vidviews = data.vidviews
