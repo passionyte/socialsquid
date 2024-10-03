@@ -176,7 +176,7 @@ function load() { // Convert our saved data to a expendible format.. load from l
 
             setTimeout(ready, (cd * 1000))
         }
-        if (data.video.exists) {
+        if (data.video) {
             videoui.hidden = false
             vidtitletext.innerText = data.video.title
             thumb.innerText = data.video.title
