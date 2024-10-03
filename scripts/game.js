@@ -1,4 +1,4 @@
-// Written by Passionyte (v.0.01)
+// Written by Passionyte
 
 // UI ELEMENTS
 
@@ -31,38 +31,40 @@ const shopui = document.getElementById("shop")
 const upgdummy = document.getElementById("upgdummy")
 const upglist = document.getElementById("upgrades")
 
-// PLAYER VARIABLES
-let views = 0
-let subs = 0
-let videos = 0
-let upgrades = [
+// STATISTICS
+let stats = {
+    "subs": 0,
+    "views": 0,
+    "videos": 0,
+    "upgradevars": {
+        "subchance": 0,
+        "likechance": 0,
+        "viewmult": 1,
+    },
+    "ownedupgrades": [],
+    "video": {
+        views: 0,
+        likes: 0,
+        dislikes: 0,
+        life: 0,
+        cooldown: 0,
+        title: ""
+    }
+}
+
+// GAME
+let timescale = 1
+let vidlifetime = 120
+let cooldown = 30
+let updaterate = 60
+
+let interval
+
+const upgrades = [
     {Name: "Subscriber Begging", Cost: 10000, Description: "Begging for subscribers raises the chance you get some!", Stat: "subchance", Inc: 0.05, Available: true},
     {Name: "Smash Like", Cost: 10000, Description: "Asking your viewers to smash the like button will increase your likes!", Stat: "likechance", Inc: 0.05, Available: true},
     {Name: "Custom Thumbnails", Cost: 100000, Description: "Begin creating custom thumbnails people will actually click!", Stat: "viewmult", Inc: 0.1, Available: true, MinSubs: 10000},
 ]
-
-// UPGRADE VARIABLES
-let upgradevars = {
-    "subchance": 0,
-    "likechance": 0,
-    "viewmult": 1,
-}
-let ownedupgrades = []
-
-// VIDEO VARIABLES
-let vidviews = 0
-let vidlikes = 0
-let viddislikes = 0
-let vidlife = 0
-let vidcooldown = 0
-let vidtitle = ""
-let interval
-
-// GAME TUNING
-let timescale = 1
-let vidlifetime = (5 * 60)
-let cooldown = 30
-let updaterate = 60
 
 // FUNCTIONS
 function ready() {
@@ -76,24 +78,24 @@ function upload() {
         interval = null
     }
 
-    vidtitle = uploadtitle.value
+    stats.video.title = uploadtitle.value
     uploadtitle.value = ""
 
-    views += vidviews
-    videos++
+    stats.views += stats.video.views
+    stats.videos++
 
-    vidviews = 0
-    vidlikes = 0
-    viddislikes = 0
-    vidlife = vidlifetime
-    vidcooldown = cooldown
+    stats.video.views = 0
+    stats.video.likes = 0
+    stats.video.dislikes = 0
+    stats.video.life = vidlifetime
+    stats.video.cooldown = cooldown
 
     uploadui.hidden = true
     cooldownui.hidden = false
 
     videoui.hidden = false
-    vidtitletext.innerText = vidtitle
-    thumb.innerText = vidtitle
+    vidtitletext.innerText = stats.video.title
+    thumb.innerText = stats.video.title
 
     step()
 
@@ -102,85 +104,56 @@ function upload() {
 }
 
 function step() {
-    totalsubs.innerText = `${subs} Subscribers`
-    totalviews.innerText = `${views} Views`
-    totalvids.innerText = `${videos} Videos`
+    totalsubs.innerText = `${stats.subs} Subscribers`
+    totalviews.innerText = `${stats.views} Views`
+    totalvids.innerText = `${stats.videos} Videos`
 
-    vidviewtext.innerText = `${vidviews} views`
-    likes.innerText = vidlikes
-    dislikes.innerText = viddislikes
+    vidviewtext.innerText = `${stats.video.views} views`
+    likes.innerText = stats.video.likes
+    dislikes.innerText = stats.video.dislikes
 
-    const ratings = (vidlikes + viddislikes)
+    const ratings = (stats.video.likes + stats.video.dislikes)
 
-    likebar.style.width = ((ratings > 0) && ((vidlikes / ratings) * 200)) || 0
+    likebar.style.width = ((ratings > 0) && ((stats.video.likes / ratings) * 200)) || 0
 
-    document.title = (((!cooldownui.hidden) && "(" + vidcooldown + ") ") || "") + `SocialSquid - ${subs} subscribers`
+    document.title = (((!cooldownui.hidden) && "(" + stats.video.cooldown + ") ") || "") + `SocialSquid - ${stats.subs} subscribers`
 
     if (!cooldownui.hidden) {
-        timeout.innerText = `Bandwidth timed out: ${vidcooldown} seconds`
+        timeout.innerText = `Bandwidth timed out: ${stats.video.cooldown} seconds`
     }
-    if (subs >= 1000 && shopui.hidden) {
-        shopui.hidden = false
+    if (stats.subs >= 100000) {
+        playbutton.src = `images/${(((stats.subs >= 100000000) && "reddiamond") || ((stats.subs >= 50000000) && "ruby") || ((stats.subs >= 10000000) && "diamond") || ((stats.subs >= 1000000) && "gold") || ((stats.subs >= 100000) && "silver"))}.png`
     }
-    if (subs >= 100000) {
-        playbutton.src = "images/" + (((subs >= 100000000) && "reddiamond") || ((subs >= 50000000) && "ruby") || ((subs >= 10000000) && "diamond") || ((subs >= 1000000) && "gold") || ((subs >= 100000) && "silver")) + ".png"
-    }
-
-    if (!shopui.hidden) {
-        updateshop()
-    }
+    
+    updateshop()
 }
-// step()
 
 function tick() {
-    if (vidcooldown > 0) {
-        vidcooldown--
+    if (stats.video.cooldown > 0) {
+        stats.video.cooldown--
     }
-    if (vidlife > 0) {
+    if (stats.video.life > 0) {
         if (Math.random() < 0.9) {
-            vidviews += Math.floor((Math.floor((((subs * Math.random()) / 32) + ((vidlikes * Math.random()) / 8))) + 1) * upgradevars.viewmult)
+            stats.video.views += Math.floor((Math.floor((((stats.subs * Math.random()) / 32) + ((stats.video.likes * Math.random()) / 8))) + 1) * stats.upgradevars.viewmult)
         }
-        if (Math.random() < (0.1 + upgradevars.subchance)) {
-            subs += ((Math.floor((((vidviews + subs) * Math.random()) / 96)) + 1))
+        if (Math.random() < (0.1 + stats.upgradevars.subchance)) {
+            stats.subs += ((Math.floor((((stats.video.views + stats.subs) * Math.random()) / 96)) + 1))
         }
-        if (Math.random() < (0.15 + upgradevars.likechance)) {
-            vidlikes += ((Math.floor(((vidviews + subs) * Math.random()) / 600) + 1))
+        if (Math.random() < (0.15 + stats.upgradevars.likechance)) {
+            stats.video.likes += ((Math.floor(((stats.video.views + stats.subs) * Math.random()) / 600) + 1))
         }
         else if (Math.random() < 0.2) {
-            viddislikes += ((Math.floor((vidviews * Math.random()) / 600) + 1))
+            stats.video.dislikes += ((Math.floor((stats.video.views * Math.random()) / 600) + 1))
         }
-        vidlife--
+        stats.video.life--
     
         step()
     }  
 }
 
 function save() { // Convert our save data to a readable format.. save to localStorage
-    if (subs > 0) { // Storage is valuable...
-        let data = {}
-
-        data.subs = subs
-        data.views = views
-        data.videos = videos
-        data.video = false
-
-        data.ownedupgrades = ownedupgrades
-        data.upgradevars = upgradevars
-
-        if (!videoui.hidden) {
-            data.video = true
-            data.vidtitle = vidtitle
-            data.vidviews = vidviews
-            data.vidlikes = vidlikes
-            data.viddislikes = viddislikes
-            data.vidlife = vidlife
-        }
-
-        if (!cooldownui.hidden) {
-            data.vidcooldown = vidcooldown
-        }
-
-        localStorage.setItem("save", JSON.stringify(data))
+    if (stats.subs > 0) { // Storage is valuable...
+        localStorage.setItem("save", JSON.stringify(stats))
         console.log("Saved user data.")
     }
 }
@@ -192,28 +165,21 @@ function load() { // Convert our saved data to a expendible format.. load from l
     if (data) {
         data = JSON.parse(data)
 
-        subs = data.subs
-        views = data.views
-        videos = data.videos
+        for (i = 0; (i < data.length); i++) {
+            stats[i] = data[i]
+        }
 
-        if (data.vidcooldown) {
+        const cd = data.video.cooldown
+        if (cd) {
             uploadui.hidden = true
             cooldownui.hidden = false
 
-            setTimeout(ready, (data.vidcooldown * 1000))
+            setTimeout(ready, (cd * 1000))
         }
-        if (data.video) {
+        if (data.video.exists) {
             videoui.hidden = false
-            vidtitletext.innerText = data.vidtitle
-            thumb.innerText = data.vidtitle
-
-            vidviews = data.vidviews
-            vidlikes = data.vidlikes
-            viddislikes = data.viddislikes
-            vidlife = data.vidlife
-            vidcooldown = data.vidcooldown
-            ownedupgrades = data.ownedupgrades
-            upgradevars = data.upgradevars
+            vidtitletext.innerText = data.video.title
+            thumb.innerText = data.video.title
             interval = setInterval(tick, (1000 / timescale))
         }
         console.log("Loaded user data.")
@@ -227,16 +193,16 @@ function appendupgrade(table) {
 
     upg.id = table.Name
 
-    upg.children[0].src = "images/" + ((table.Icon) && table.Icon || "placeholder") + ".png"
-    upg.children[1].innerText = table.Name + " - " + table.Cost + " views"
+    upg.children[0].src = `images/${((table.Icon) && table.Icon || "placeholder")}.png`
+    upg.children[1].innerText = `${table.Name} - ${table.Cost} views`
     upg.children[3].innerText = table.Description
 
     upg.children[5].addEventListener("click", _ => {
-        if (views >= table.Cost) {
-            views -= table.Cost
+        if (stats.views >= table.Cost) {
+            stats.views -= table.Cost
             upgradevars[table.Stat] += table.Inc
 
-            ownedupgrades.push(table.Name)
+            stats.ownedupgrades.push(table.Name)
 
             upglist.removeChild(upg)
         }
@@ -264,7 +230,7 @@ function updateshop() {
     for (i = 0; (i < upgrades.length); i++) {
         const upgrade = upgrades[i]
 
-        if (((upgrade.Available) && (!upgrade.MinSubs || (subs >= upgrade.MinSubs))) && (!findstring(upgrade.Name, ownedupgrades))) {
+        if (((upgrade.Available) && (!upgrade.MinSubs || (stats.subs >= upgrade.MinSubs))) && (!findstring(upgrade.Name, stats.ownedupgrades))) {
             appendupgrade(upgrade)
         }
     }
