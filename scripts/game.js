@@ -170,7 +170,7 @@ function load() { // Convert our saved data to a expendible format.. load from l
         }
 
         const cd = data.video.cooldown
-        if (cd) {
+        if (cd > 0) {
             uploadui.hidden = true
             cooldownui.hidden = false
 
