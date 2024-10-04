@@ -37,11 +37,6 @@ let stats = {
     "subs": 0,
     "views": 0,
     "videos": 0,
-    "upgradevars": {
-        "subchance": 0,
-        "likechance": 0,
-        "viewmult": 1,
-    },
     "ownedupgrades": [],
     "video": {
         views: 0,
@@ -51,6 +46,16 @@ let stats = {
         cooldown: 0,
         title: ""
     }
+}
+let upgradevars = {
+    "subchance": 0,
+    "viewchance": 0,
+    "likechance": 0,
+    "dislikechance": 0,
+    "submult": 1,
+    "viewmult": 1,
+    "likemult": 1,
+    "dislikemult": 1,
 }
 
 // GAME
@@ -134,17 +139,17 @@ function tick() {
         stats.video.cooldown--
     }
     if (stats.video.life > 0) {
-        if (Math.random() < 0.9) {
-            stats.video.views += Math.floor((Math.floor((((stats.subs * Math.random()) / 32) + ((stats.video.likes * Math.random()) / 8))) + 1) * stats.upgradevars.viewmult)
+        if (Math.random() < (0.9 + upgradevars.viewchance)) {
+            stats.video.views += Math.floor((Math.floor((((stats.subs * Math.random()) / 32) + ((stats.video.likes * Math.random()) / 8))) + 1) * upgradevars.viewmult)
         }
-        if (Math.random() < (0.1 + stats.upgradevars.subchance)) {
-            stats.subs += ((Math.floor((((stats.video.views + stats.subs) * Math.random()) / 96)) + 1))
+        if (Math.random() < (0.1 + upgradevars.subchance)) {
+            stats.subs += Math.floor((Math.floor((((stats.video.views + stats.subs) * Math.random()) / 96)) + 1) * upgradevars.submult)
         }
-        if (Math.random() < (0.15 + stats.upgradevars.likechance)) {
-            stats.video.likes += ((Math.floor(((stats.video.views + stats.subs) * Math.random()) / 600) + 1))
+        if (Math.random() < (0.15 + upgradevars.likechance)) {
+            stats.video.likes += Math.floor((Math.floor(((stats.video.views + stats.subs) * Math.random()) / 600) + 1) * upgradevars.likemult)
         }
-        else if (Math.random() < 0.2) {
-            stats.video.dislikes += ((Math.floor((stats.video.views * Math.random()) / 600) + 1))
+        else if (Math.random() < (0.2 + upgradevars.likechance)) {
+            stats.video.dislikes += Math.floor((Math.floor((stats.video.views * Math.random()) / 600) + 1) * upgradevars.dislikemult)
         }
         stats.video.life--
     
@@ -166,6 +171,21 @@ function load() { // Convert our saved data to a expendible format.. load from l
     if (data) {
         stats = JSON.parse(data)
 
+        for (let i = 0; (i < stats.ownedupgrades.length); i++) {
+            let upgrade
+
+            for (let x = 0; (x < upgrades.length); x++) {
+                if (upgrades[x].Name == stats.ownedupgrades[i]) {
+                    upgrade = upgrades[x]
+                    break
+                }
+            }
+
+            if (upgrade) {
+                upgradevars[upgrade.Stat] += upgrade.Inc
+            }
+        }
+
         const cd = stats.video.cooldown
         if (cd > 0) {
             uploadui.hidden = true
@@ -179,6 +199,7 @@ function load() { // Convert our saved data to a expendible format.. load from l
             thumb.innerText = stats.video.title
             interval = setInterval(tick, (1000 / timescale))
         }
+
         console.log("Loaded user data.")
     }
     else {
@@ -198,7 +219,7 @@ function appendupgrade(table) {
     upg.children[5].addEventListener("click", _ => {
         if (stats.views >= table.Cost) {
             stats.views -= table.Cost
-            stats.upgradevars[table.Stat] += table.Inc
+            upgradevars[table.Stat] += table.Inc
 
             stats.ownedupgrades.push(table.Name)
 
