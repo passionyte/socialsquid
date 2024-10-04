@@ -101,7 +101,7 @@ function upload() {
     step()
 
     interval = setInterval(tick, (1000 / timescale))
-    setTimeout(ready, (1000 * cooldown))
+    setTimeout(ready, ((1000 * cooldown) / timescale))
 }
 
 function step() {
@@ -158,7 +158,7 @@ function save() { // Convert our save data to a readable format.. save to localS
         console.log("Saved user data.")
     }
 }
-setInterval(save, (updaterate * 1000))
+setInterval(save, ((updaterate * 1000) / timescale))
 
 function load() { // Convert our saved data to a expendible format.. load from localStorage
     let data = localStorage.getItem("save")
@@ -171,7 +171,7 @@ function load() { // Convert our saved data to a expendible format.. load from l
             uploadui.hidden = true
             cooldownui.hidden = false
 
-            setTimeout(ready, (cd * 1000))
+            setTimeout(ready, ((cd * 1000) / timescale))
         }
         if (stats.video.views > 0) {
             videoui.hidden = false
