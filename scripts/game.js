@@ -30,6 +30,7 @@ const playbutton = document.getElementById("playbutton")
 const shopui = document.getElementById("shop")
 const upgdummy = document.getElementById("upgdummy")
 const upglist = document.getElementById("upgrades")
+let upgbuttons = []
 
 // STATISTICS
 let stats = {
@@ -193,7 +194,7 @@ load()
 function appendupgrade(table) {
     let upg = upgdummy.cloneNode(true)
 
-    upg.id = table.Name
+    // upg.id = table.Name
 
     upg.children[0].src = `images/${((table.Icon) && table.Icon || "placeholder")}.png`
     upg.children[1].innerText = `${table.Name} - ${table.Cost} views`
@@ -212,6 +213,7 @@ function appendupgrade(table) {
 
     upg.hidden = false
     upglist.appendChild(upg)
+    upgbuttons.push(table.Name)
 }
 
 function findstring(string, table) {
@@ -227,13 +229,15 @@ function findstring(string, table) {
 }
 
 function updateshop() {
-    upglist.innerHTML = ""
+    // upglist.innerHTML = ""
 
     for (i = 0; (i < upgrades.length); i++) {
         const upgrade = upgrades[i]
 
-        if (((upgrade.Available) && (!upgrade.MinSubs || (stats.subs >= upgrade.MinSubs))) && (!findstring(upgrade.Name, stats.ownedupgrades))) {
-            appendupgrade(upgrade)
+        if (!upgbuttons[upgrade.Name]) {
+            if (((upgrade.Available) && (!upgrade.MinSubs || (stats.subs >= upgrade.MinSubs))) && (!findstring(upgrade.Name, stats.ownedupgrades))) {
+                appendupgrade(upgrade)
+            }
         }
     }
 }
