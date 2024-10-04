@@ -198,7 +198,7 @@ function appendupgrade(table) {
     upg.children[5].addEventListener("click", _ => {
         if (stats.views >= table.Cost) {
             stats.views -= table.Cost
-            upgradevars[table.Stat] += table.Inc
+            stats.upgradevars[table.Stat] += table.Inc
 
             stats.ownedupgrades.push(table.Name)
 
