@@ -164,37 +164,32 @@ function load() { // Convert our saved data to a expendible format.. load from l
     let data = localStorage.getItem("save")
 
     if (data) {
-        data = JSON.parse(data)
+        stats = JSON.parse(data)
 
-        for (let [index, value] of data.entries()) {
-            if (stats[index]) {
-                stats[index] = value
-            }
-        }
-
-        const cd = data.video.cooldown
+        const cd = stats.video.cooldown
         if (cd > 0) {
             uploadui.hidden = true
             cooldownui.hidden = false
 
             setTimeout(ready, (cd * 1000))
         }
-        if (data.video.views > 0) {
+        if (stats.video.views > 0) {
             videoui.hidden = false
-            vidtitletext.innerText = data.video.title
-            thumb.innerText = data.video.title
+            vidtitletext.innerText = stats.video.title
+            thumb.innerText = stats.video.title
             interval = setInterval(tick, (1000 / timescale))
         }
         console.log("Loaded user data.")
-        step()
     }
+    else {
+        console.log("No user data.")
+    }
+    step()
 }
 load()
 
 function appendupgrade(table) {
     let upg = upgdummy.cloneNode(true)
-
-    // upg.id = table.Name
 
     upg.children[0].src = `images/${((table.Icon) && table.Icon || "placeholder")}.png`
     upg.children[1].innerText = `${table.Name} - ${table.Cost} views`
@@ -229,12 +224,10 @@ function findstring(string, table) {
 }
 
 function updateshop() {
-    // upglist.innerHTML = ""
-
     for (i = 0; (i < upgrades.length); i++) {
         const upgrade = upgrades[i]
 
-        if (!upgbuttons[upgrade.Name]) {
+        if (!findstring(upgrade.Name, upgbuttons)) {
             if (((upgrade.Available) && (!upgrade.MinSubs || (stats.subs >= upgrade.MinSubs))) && (!findstring(upgrade.Name, stats.ownedupgrades))) {
                 appendupgrade(upgrade)
             }
