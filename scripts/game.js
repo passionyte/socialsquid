@@ -165,10 +165,10 @@ function load() { // Convert our saved data to a expendible format.. load from l
     if (data) {
         data = JSON.parse(data)
 
-        for (i = 0; (i < data.length); i++) {
-            console.log(stats[i])
-            console.log(data[i])
-            stats[i] = data[i]
+        for (let [index, value] of data.entries()) {
+            if (stats[index]) {
+                stats[index] = value
+            }
         }
 
         const cd = data.video.cooldown
