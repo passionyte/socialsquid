@@ -79,6 +79,7 @@
     background-color: white;
     font-family: 'Courier New', Courier, monospace;
     margin-bottom: 20px;
+    overflow: auto;
 }
 
 .upgicon {
