@@ -67,9 +67,12 @@ let updaterate = 60
 let interval
 
 const upgrades = [
-    {Name: "Subscriber Begging", Cost: 10000, Description: "Begging for subscribers raises the chance you get some!", Stat: "subchance", Inc: 0.05, Available: true},
-    {Name: "Smash Like", Cost: 10000, Description: "Asking your viewers to smash the like button will increase your likes!", Stat: "likechance", Inc: 0.05, Available: true},
+    {Name: "Subscriber Begging", Cost: 1000, Description: "Begging for subscribers raises the chance you get some!", Stat: "subchance", Inc: 0.02, Available: true},
+    {Name: "Smash Like", Cost: 1000, Description: "Asking your viewers to smash the like button will increase your likes!", Stat: "likechance", Inc: 0.02, Available: true},
+    {Name: "Webcam", Cost: 10000, Description: "Use a webcam for better viewer engagement.", Stat: "subchance", Inc: 0.03, Available: true, MinSubs: 1000},
+    {Name: "HD Video", Cost: 50000, Description: "Upgrade your device for better quality so less people dislike!", Stat: "dislikechance", Inc: -0.05, Available: true, MinSubs: 5000},
     {Name: "Custom Thumbnails", Cost: 100000, Description: "Begin creating custom thumbnails people will actually click!", Stat: "viewmult", Inc: 0.1, Available: true, MinSubs: 10000},
+    {Name: "Favorability", Cost: 1000000, Description: "You've grown to the point people love you! Just believe!", Stat: "likechance", Inc: 0.08, Available: true, MinSubs: 100000},
 ]
 
 // FUNCTIONS
@@ -140,15 +143,15 @@ function tick() {
     }
     if (stats.video.life > 0) {
         if (Math.random() < (0.9 + upgradevars.viewchance)) {
-            stats.video.views += Math.floor((Math.floor((((stats.subs * Math.random()) / 32) + ((stats.video.likes * Math.random()) / 8))) + 1) * upgradevars.viewmult)
+            stats.video.views += Math.floor((Math.floor((((stats.subs * Math.random()) / 48) + ((stats.video.likes * Math.random()) / 8))) + 1) * upgradevars.viewmult)
         }
         if (Math.random() < (0.1 + upgradevars.subchance)) {
-            stats.subs += Math.floor((Math.floor((((stats.video.views + stats.subs) * Math.random()) / 96)) + 1) * upgradevars.submult)
+            stats.subs += Math.floor((Math.floor((((stats.video.views + stats.subs) * Math.random()) / 128)) + 1) * upgradevars.submult)
         }
         if (Math.random() < (0.15 + upgradevars.likechance)) {
             stats.video.likes += Math.floor((Math.floor(((stats.video.views + stats.subs) * Math.random()) / 600) + 1) * upgradevars.likemult)
         }
-        else if (Math.random() < (0.2 + upgradevars.likechance)) {
+        else if (Math.random() < (0.2 + upgradevars.dislikechance)) {
             stats.video.dislikes += Math.floor((Math.floor((stats.video.views * Math.random()) / 600) + 1) * upgradevars.dislikemult)
         }
         stats.video.life--
