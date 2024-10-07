@@ -1,6 +1,6 @@
 .left {
-    float: left;
-    width: 50%;
+    position: absolute;
+    width: 30%;
     height: 100%;
     background-color: whitesmoke;
 }
@@ -15,6 +15,10 @@
 .text {
     font-family:'Courier New', Courier, monospace;
     font-size: medium;
+}
+
+.smalltext {
+    font-family:'Courier New', Courier, monospace;
 }
 
 .bigtext {
@@ -67,10 +71,11 @@
 }
 
 .shop {
-    float: right;
+    position: absolute;
+    left: 70%;
     height: 100%;
     background-color: whitesmoke;
-    width: 40%;
+    width: 30%;
 }
 
 .upgrade {
@@ -96,4 +101,26 @@
 .upgdesc {
     margin-left: 20px;
     font-size: small
+}
+
+.center {
+    position: absolute;
+    left: 35%;
+    height: 100%;
+    background-color: whitesmoke;
+    width: 30%;
+}
+
+.centerbuttons {
+    width: 100%;
+    height: 10%;
+    border-color: black;
+}
+
+.centerbutton {
+    position: absolute;
+    width: 20%;
+    height: 7%;
+    font-family:'Courier New', Courier, monospace;
+    font-weight:bold;
 }

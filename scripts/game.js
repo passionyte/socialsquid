@@ -27,7 +27,6 @@ const totalvids = document.getElementById("totalvids")
 const playbutton = document.getElementById("playbutton")
 
 // Shop
-const shopui = document.getElementById("shop")
 const upgdummy = document.getElementById("upgdummy")
 const upglist = document.getElementById("upgrades")
 let upgbuttons = []
@@ -56,23 +55,30 @@ let upgradevars = {
     "viewmult": 1,
     "likemult": 1,
     "dislikemult": 1,
+    "cooldown": 120,
+    "vidlifetime": 60,
 }
 
 // GAME
 let timescale = 1
-let vidlifetime = 120
-let cooldown = 30
 let updaterate = 60
 
 let interval
 
 const upgrades = [
-    {Name: "Subscriber Begging", Cost: 1000, Description: "Begging for subscribers raises the chance you get some!", Stat: "subchance", Inc: 0.02, Available: true},
-    {Name: "Smash Like", Cost: 1000, Description: "Asking your viewers to smash the like button will increase your likes!", Stat: "likechance", Inc: 0.02, Available: true},
-    {Name: "Webcam", Cost: 10000, Description: "Use a webcam for better viewer engagement.", Stat: "subchance", Inc: 0.03, Available: true, MinSubs: 1000},
-    {Name: "HD Video", Cost: 50000, Description: "Upgrade your device for better quality so less people dislike!", Stat: "dislikechance", Inc: -0.05, Available: true, MinSubs: 5000},
-    {Name: "Custom Thumbnails", Cost: 100000, Description: "Begin creating custom thumbnails people will actually click!", Stat: "viewmult", Inc: 0.1, Available: true, MinSubs: 10000},
-    {Name: "Favorability", Cost: 1000000, Description: "You've grown to the point people love you! Just believe!", Stat: "likechance", Inc: 0.08, Available: true, MinSubs: 100000},
+    {Name: "Subscriber Begging", Cost: 1000, Description: "Begging for subscribers raises the chance you get some! (+2% for subs)", Stat: "subchance", Inc: 0.02, Available: true},
+    {Name: "Smash Like", Cost: 1000, Description: "Asking your viewers to smash the like button will increase your likes! (+2% for likes)", Stat: "likechance", Inc: 0.02, Available: true},
+    {Name: "Faster Wi-Fi", Cost: 1000, Description: "Wi-Fi will time out less if you upgrade it to be faster. (-10s cooldown)", Stat: "cooldown", Inc: -10, Available: true},
+    {Name: "Smarter Titles", Cost: 5000, Description: "Better titles will make more people click. (+5% chance for views)", Stat: "viewchance", Inc: 0.05, Available: true, MinSubs: 500},
+    {Name: "Trending Topic", Cost: 10000, Description: "Making videos on trending topics will increase the longevity. (+15s vid lifetime)", Inc: 15, Available: true, MinSubs: 1000},
+    {Name: "Webcam", Cost: 10000, Description: "Use a webcam for better viewer engagement. (+3% chance for subs)", Stat: "subchance", Inc: 0.03, Available: true, MinSubs: 1000},
+    {Name: "HD Video", Cost: 50000, Description: "Upgrade your device for better quality so less people dislike! (-5% chance for dislikes)", Stat: "dislikechance", Inc: -0.05, Available: true, MinSubs: 5000},
+    {Name: "Even-Faster Wi-Fi", Cost: 50000, Description: "Reduce Wi-Fi timeout by making it EVEN-FASTER! (-15s cooldown)", Stat: "cooldown", Inc: -15, Available: true, MinSubs: 5000},
+    {Name: "Custom Thumbnails", Cost: 100000, Description: "Begin creating custom thumbnails people will actually click! (+10% views)", Stat: "viewmult", Inc: 0.1, Available: true, MinSubs: 10000},
+    {Name: "Unique Content", Cost: 100000, Description: "Having more unique content will make your videos stand out from others. (+20s vid lifetime)", Inc: 20, Available: true, MinSubs: 10000},
+    {Name: "Fiber Wi-Fi", Cost: 500000, Description: "Upgrade your even-faster Wi-Fi to Fiber for even faster uploads. (-20s cooldown)", Stat: "cooldown", Inc: -20, Available: true, MinSubs: 50000},
+    {Name: "Favorability", Cost: 1000000, Description: "You've grown to the point people love you! Just believe! (+8% chance for likes)", Stat: "likechance", Inc: 0.08, Available: true, MinSubs: 100000},
+    {Name: "Collaboration", Cost: 5000000, Description: "Collaborate with other creators! (+10% views)", Stat: "viewmult", Inc: 0.1, Available: true, MinSubs: 500000}
 ]
 
 // FUNCTIONS
@@ -96,8 +102,8 @@ function upload() {
     stats.video.views = 0
     stats.video.likes = 0
     stats.video.dislikes = 0
-    stats.video.life = vidlifetime
-    stats.video.cooldown = cooldown
+    stats.video.life = upgradevars.vidlifetime
+    stats.video.cooldown = upgradevars.cooldown
 
     uploadui.hidden = true
     cooldownui.hidden = false
@@ -109,7 +115,7 @@ function upload() {
     step()
 
     interval = setInterval(tick, (1000 / timescale))
-    setTimeout(ready, ((1000 * cooldown) / timescale))
+    setTimeout(ready, ((1000 * upgradevars.cooldown) / timescale))
 }
 
 function step() {
@@ -148,16 +154,15 @@ function tick() {
         if (Math.random() < (0.1 + upgradevars.subchance)) {
             stats.subs += Math.floor((Math.floor((((stats.video.views + stats.subs) * Math.random()) / 128)) + 1) * upgradevars.submult)
         }
-        if (Math.random() < (0.15 + upgradevars.likechance)) {
+        if (Math.random () < (0.15 + upgradevars.likechance)) {
             stats.video.likes += Math.floor((Math.floor(((stats.video.views + stats.subs) * Math.random()) / 600) + 1) * upgradevars.likemult)
         }
         else if (Math.random() < (0.2 + upgradevars.dislikechance)) {
             stats.video.dislikes += Math.floor((Math.floor((stats.video.views * Math.random()) / 600) + 1) * upgradevars.dislikemult)
         }
         stats.video.life--
-    
-        step()
     }  
+    step()
 }
 
 function save() { // Convert our save data to a readable format.. save to localStorage
