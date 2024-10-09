@@ -66,10 +66,11 @@ let updaterate = 60
 let interval
 
 const upgrades = [
-    {Name: "Subscriber Begging", Cost: 1000, Description: "Begging for subscribers raises the chance you get some! (+2% for subs)", Stat: "subchance", Inc: 0.02, Available: true},
-    {Name: "Smash Like", Cost: 1000, Description: "Asking your viewers to smash the like button will increase your likes! (+2% for likes)", Stat: "likechance", Inc: 0.02, Available: true},
+    {Name: "Subscriber Begging", Cost: 1000, Description: "Begging for subscribers raises the chance you get some! (+3% chance for subs)", Stat: "subchance", Inc: 0.03, Available: true},
+    {Name: "Smash Like", Cost: 1000, Description: "Asking your viewers to smash the like button will increase your likes! (+5% chance for likes)", Stat: "likechance", Inc: 0.05, Available: true},
     {Name: "Faster Wi-Fi", Cost: 1000, Description: "Wi-Fi will time out less if you upgrade it to be faster. (-10s cooldown)", Stat: "cooldown", Inc: -10, Available: true},
-    {Name: "Smarter Titles", Cost: 5000, Description: "Better titles will make more people click. (+5% chance for views)", Stat: "viewchance", Inc: 0.05, Available: true, MinSubs: 500},
+    {Name: "Smarter Titles", Cost: 5000, Description: "Better titles will make more people click. (Guaranteed chance for views)", Stat: "viewchance", Inc: 0.1, Available: true, MinSubs: 500},
+    {Name: "Commentary", Cost: 5000, Description: "Adding commentary to your videos will make them more engaging! (+5% chance for subs)", Stat: "subchance", Inc: 0.05, Available: true, MinSubs: 500},
     {Name: "Trending Topic", Cost: 10000, Description: "Making videos on trending topics will increase the longevity. (+15s vid lifetime)", Inc: 15, Available: true, MinSubs: 1000},
     {Name: "Webcam", Cost: 10000, Description: "Use a webcam for better viewer engagement. (+3% chance for subs)", Stat: "subchance", Inc: 0.03, Available: true, MinSubs: 1000},
     {Name: "HD Video", Cost: 50000, Description: "Upgrade your device for better quality so less people dislike! (-5% chance for dislikes)", Stat: "dislikechance", Inc: -0.05, Available: true, MinSubs: 5000},
@@ -119,25 +120,33 @@ function upload() {
 }
 
 function step() {
-    totalsubs.innerText = `${stats.subs} Subscribers`
-    totalviews.innerText = `${stats.views} Views`
+    const roundedsubs = Math.floor(stats.subs)
+
+    totalsubs.innerText = `${roundedsubs} Subscribers`
+    totalviews.innerText = `${Math.floor(stats.views)} Views`
     totalvids.innerText = `${stats.videos} Videos`
 
-    vidviewtext.innerText = `${stats.video.views} views`
-    likes.innerText = stats.video.likes
-    dislikes.innerText = stats.video.dislikes
+    vidviewtext.innerText = `${Math.floor(stats.video.views)} views`
 
-    const ratings = (stats.video.likes + stats.video.dislikes)
+    const roundedlikes = Math.floor(stats.video.likes)
+    const roundeddislikes = Math.floor(stats.video.dislikes)
 
-    likebar.style.width = ((ratings > 0) && ((stats.video.likes / ratings) * 200)) || 0
+    likes.innerText = roundedlikes
+    dislikes.innerText = roundeddislikes
 
-    document.title = (((!cooldownui.hidden) && "(" + Math.floor(stats.video.cooldown) + ") ") || "") + `SocialSquid - ${stats.subs} subscribers`
+    const ratings = (roundedlikes + roundeddislikes)
+
+    likebar.style.width = ((ratings > 0) && ((roundedlikes / ratings) * 200)) || 0
+
+    const roundedcooldown = Math.floor(stats.video.cooldown)
+
+    document.title = (((!cooldownui.hidden) && "(" + roundedcooldown + ") ") || "") + `SocialSquid - ${roundedsubs} subscribers`
 
     if (!cooldownui.hidden) {
-        timeout.innerText = `Bandwidth timed out: ${Math.floor(stats.video.cooldown)} seconds`
+        timeout.innerText = `Bandwidth timed out: ${roundedcooldown} seconds`
     }
-    if (stats.subs >= 100000) {
-        playbutton.src = `images/${(((stats.subs >= 100000000) && "reddiamond") || ((stats.subs >= 50000000) && "ruby") || ((stats.subs >= 10000000) && "diamond") || ((stats.subs >= 1000000) && "gold") || ((stats.subs >= 100000) && "silver"))}.png`
+    if (roundedsubs >= 100000) {
+        playbutton.src = `images/${(((roundedsubs >= 100000000) && "reddiamond") || ((roundedsubs >= 50000000) && "ruby") || ((roundedsubs >= 10000000) && "diamond") || ((roundedsubs >= 1000000) && "gold") || ((roundedsubs >= 100000) && "silver"))}.png`
     }
     
     updateshop()
@@ -149,18 +158,18 @@ function tick() {
     }
     if (stats.video.life > 0) {
         if (Math.random() < (0.9 + upgradevars.viewchance)) {
-            const inc = Math.ceil((((Math.floor((((stats.subs * Math.random()) / 48) + ((stats.video.likes * Math.random()) / 8))) + 1) * upgradevars.viewmult) / 60))
+            const inc = (((Math.floor((((stats.subs * Math.random()) / 48) + ((stats.video.likes * Math.random()) / 8))) + 1) * upgradevars.viewmult) / 60)
             stats.video.views += inc
             stats.views += inc
         }
         if (Math.random() < (0.1 + upgradevars.subchance)) {
-            stats.subs += Math.ceil((Math.floor((((((stats.video.views + stats.subs) * Math.random()) / 128)) + 1) * upgradevars.submult) / 60))
+            stats.subs += (Math.floor((((((stats.video.views + stats.subs) * Math.random()) / 128)) + 1) * upgradevars.submult) / 60)
         }
         if (Math.random () < (0.15 + upgradevars.likechance)) {
-            stats.video.likes += Math.ceil((((Math.floor(((stats.video.views + stats.subs) * Math.random()) / 600) + 1) * upgradevars.likemult) / 60))
+            stats.video.likes += (((Math.floor(((stats.video.views + stats.subs) * Math.random()) / 600) + 1) * upgradevars.likemult) / 60)
         }
         else if (Math.random() < (0.2 + upgradevars.dislikechance)) {
-            stats.video.dislikes += Math.ceil((((Math.floor((stats.video.views * Math.random()) / 600) + 1) * upgradevars.dislikemult) / 60))
+            stats.video.dislikes += (((Math.floor((stats.video.views * Math.random()) / 600) + 1) * upgradevars.dislikemult) / 60)
         }
         stats.video.life -= (1 / 60)
     }  
