@@ -96,7 +96,7 @@ function upload() {
     stats.video.title = uploadtitle.value
     uploadtitle.value = ""
 
-    stats.views += stats.video.views
+    // stats.views += stats.video.views
     stats.videos++
 
     stats.video.views = 0
@@ -114,7 +114,7 @@ function upload() {
 
     step()
 
-    interval = setInterval(tick, (1000 / timescale))
+    interval = setInterval(tick, ((1000 / timescale) / 60))
     setTimeout(ready, ((1000 * upgradevars.cooldown) / timescale))
 }
 
@@ -131,10 +131,10 @@ function step() {
 
     likebar.style.width = ((ratings > 0) && ((stats.video.likes / ratings) * 200)) || 0
 
-    document.title = (((!cooldownui.hidden) && "(" + stats.video.cooldown + ") ") || "") + `SocialSquid - ${stats.subs} subscribers`
+    document.title = (((!cooldownui.hidden) && "(" + Math.floor(stats.video.cooldown) + ") ") || "") + `SocialSquid - ${stats.subs} subscribers`
 
     if (!cooldownui.hidden) {
-        timeout.innerText = `Bandwidth timed out: ${stats.video.cooldown} seconds`
+        timeout.innerText = `Bandwidth timed out: ${Math.floor(stats.video.cooldown)} seconds`
     }
     if (stats.subs >= 100000) {
         playbutton.src = `images/${(((stats.subs >= 100000000) && "reddiamond") || ((stats.subs >= 50000000) && "ruby") || ((stats.subs >= 10000000) && "diamond") || ((stats.subs >= 1000000) && "gold") || ((stats.subs >= 100000) && "silver"))}.png`
@@ -145,22 +145,24 @@ function step() {
 
 function tick() {
     if (stats.video.cooldown > 0) {
-        stats.video.cooldown--
+        stats.video.cooldown -= (1 / 60)
     }
     if (stats.video.life > 0) {
         if (Math.random() < (0.9 + upgradevars.viewchance)) {
-            stats.video.views += Math.floor((Math.floor((((stats.subs * Math.random()) / 48) + ((stats.video.likes * Math.random()) / 8))) + 1) * upgradevars.viewmult)
+            const inc = Math.floor((((Math.floor((((stats.subs * Math.random()) / 48) + ((stats.video.likes * Math.random()) / 8))) + 1) * upgradevars.viewmult) / 60))
+            stats.video.views += inc
+            stats.views += inc
         }
         if (Math.random() < (0.1 + upgradevars.subchance)) {
-            stats.subs += Math.floor((Math.floor((((stats.video.views + stats.subs) * Math.random()) / 128)) + 1) * upgradevars.submult)
+            stats.subs += Math.floor((Math.floor((((((stats.video.views + stats.subs) * Math.random()) / 128)) + 1) * upgradevars.submult) / 60))
         }
         if (Math.random () < (0.15 + upgradevars.likechance)) {
-            stats.video.likes += Math.floor((Math.floor(((stats.video.views + stats.subs) * Math.random()) / 600) + 1) * upgradevars.likemult)
+            stats.video.likes += Math.floor((((Math.floor(((stats.video.views + stats.subs) * Math.random()) / 600) + 1) * upgradevars.likemult) / 60))
         }
         else if (Math.random() < (0.2 + upgradevars.dislikechance)) {
-            stats.video.dislikes += Math.floor((Math.floor((stats.video.views * Math.random()) / 600) + 1) * upgradevars.dislikemult)
+            stats.video.dislikes += Math.floor((((Math.floor((stats.video.views * Math.random()) / 600) + 1) * upgradevars.dislikemult) / 60))
         }
-        stats.video.life--
+        stats.video.life -= (1 / 60)
     }  
     step()
 }
@@ -205,7 +207,7 @@ function load() { // Convert our saved data to a expendible format.. load from l
             videoui.hidden = false
             vidtitletext.innerText = stats.video.title
             thumb.innerText = stats.video.title
-            interval = setInterval(tick, (1000 / timescale))
+            interval = setInterval(tick, ((1000 / timescale) / 60))
         }
 
         console.log("Loaded user data.")
