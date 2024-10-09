@@ -149,18 +149,18 @@ function tick() {
     }
     if (stats.video.life > 0) {
         if (Math.random() < (0.9 + upgradevars.viewchance)) {
-            const inc = Math.round((((Math.floor((((stats.subs * Math.random()) / 48) + ((stats.video.likes * Math.random()) / 8))) + 1) * upgradevars.viewmult) / 60))
+            const inc = Math.ceil((((Math.floor((((stats.subs * Math.random()) / 48) + ((stats.video.likes * Math.random()) / 8))) + 1) * upgradevars.viewmult) / 60))
             stats.video.views += inc
             stats.views += inc
         }
         if (Math.random() < (0.1 + upgradevars.subchance)) {
-            stats.subs += Math.round((Math.floor((((((stats.video.views + stats.subs) * Math.random()) / 128)) + 1) * upgradevars.submult) / 60))
+            stats.subs += Math.ceil((Math.floor((((((stats.video.views + stats.subs) * Math.random()) / 128)) + 1) * upgradevars.submult) / 60))
         }
         if (Math.random () < (0.15 + upgradevars.likechance)) {
-            stats.video.likes += Math.round((((Math.floor(((stats.video.views + stats.subs) * Math.random()) / 600) + 1) * upgradevars.likemult) / 60))
+            stats.video.likes += Math.ceil((((Math.floor(((stats.video.views + stats.subs) * Math.random()) / 600) + 1) * upgradevars.likemult) / 60))
         }
         else if (Math.random() < (0.2 + upgradevars.dislikechance)) {
-            stats.video.dislikes += Math.round((((Math.floor((stats.video.views * Math.random()) / 600) + 1) * upgradevars.dislikemult) / 60))
+            stats.video.dislikes += Math.ceil((((Math.floor((stats.video.views * Math.random()) / 600) + 1) * upgradevars.dislikemult) / 60))
         }
         stats.video.life -= (1 / 60)
     }  
