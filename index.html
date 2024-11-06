@@ -53,9 +53,27 @@
     </div>
     <div class="center">
         <div class="centerbuttons">
-            <button class="centerbutton">Settings</button>
-            <button class="centerbutton" style="left: 80%">Stats</button>
+            <button class="centerbutton" id="settingsbutton">Settings</button>
+            <button class="centerbutton" style="left: 80%" id="statsbutton">Stats</button>
         </div> <hr>
+        <div class="menu" id="settings" hidden>
+            <a class="bigtext">Settings</a> <hr>
+            <div class="setting" id="booldummy" hidden> 
+                <hr>
+                <button class="settingsbutton">Setting Name: ON</button>
+                <a class="upgdesc">Boolean Setting Description</a>  
+                <hr>
+            </div>
+            <div class="setting" id="inputdummy" hidden> 
+                <hr>
+                <input class="settingsinput"></input>
+                <a class="upgdesc">Input Setting Description</a>  
+                <hr>
+            </div>
+        </div>
+        <div class="menu" id="stats" hidden>
+            <a class="bigtext">Stats</a> <hr>
+        </div>
     </div>
     <div class="shop" id="shop">
         <a class="title">Shop</a> <br> <hr>

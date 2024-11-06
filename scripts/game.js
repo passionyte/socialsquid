@@ -31,6 +31,10 @@ const upgdummy = document.getElementById("upgdummy")
 const upglist = document.getElementById("upgrades")
 let upgbuttons = []
 
+// Top Bar
+const statsbutton = document.getElementById("statsbutton")
+const settingsbutton = document.getElementById("settingsbutton")
+
 // STATISTICS
 let stats = {
     "subs": 0,
@@ -119,7 +123,6 @@ function upload() {
     step()
 
     interval = setInterval(tick, ((1000 / timescale) / 60))
-    setTimeout(ready, ((1000 * upgradevars.cooldown) / timescale))
 }
 
 function step() {
@@ -143,7 +146,7 @@ function step() {
 
     const roundedcooldown = Math.floor(stats.video.cooldown)
 
-    document.title = (((!cooldownui.hidden) && "(" + roundedcooldown + ") ") || "") + `SocialSquid - ${roundedsubs} subscribers`
+    document.title = (((!cooldownui.hidden) && "(" + roundedcooldown + ") ") || "") + `${roundedsubs} subscribers - SocialSquid`
 
     if (!cooldownui.hidden) {
         timeout.innerText = `Bandwidth timed out: ${roundedcooldown} seconds`
@@ -158,6 +161,9 @@ function step() {
 function tick() {
     if (stats.video.cooldown > 0) {
         stats.video.cooldown -= (1 / 60)
+    }
+    else {
+        ready()
     }
     if (stats.video.life > 0) {
         if (Math.random() < (0.9 + upgradevars.viewchance)) {
@@ -178,7 +184,6 @@ function tick() {
     }  
     step()
 }
-
 function save() { // Convert our save data to a readable format.. save to localStorage
     if (stats.subs > 0) { // Storage is valuable...
         localStorage.setItem("save", JSON.stringify(stats))
