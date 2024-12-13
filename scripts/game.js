@@ -153,7 +153,7 @@ function upload() {
        thumb.style.backgroundColor = "rgb(255, 255, 0)"
     }
     else {
-        thumb.style.backgroundColor = "whitesmoke" // I actually have no idea if this works
+        thumb.style.backgroundColor = "white" // I actually have no idea if this works
     }
 
     step()
@@ -203,7 +203,7 @@ function step() {
 
 function tick() {
     if (stats.video.cooldown > 0) {
-        stats.video.cooldown -= (1 / (fps * timescale))
+        stats.video.cooldown -= ((1 / fps) * timescale)
     }
     else {
         ready()
@@ -282,7 +282,7 @@ function load() { // Convert our saved data to a expendible format.. load from l
             thumb.style.backgroundColor = "rgb(255, 255, 0)"
         }
         else {
-            thumb.style.backgroundColor = "whitesmoke" // I actually have no idea if this works
+            thumb.style.backgroundColor = "white" // I actually have no idea if this works
         }
     }
 
