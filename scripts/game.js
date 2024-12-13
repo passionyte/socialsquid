@@ -79,7 +79,7 @@ let upgvars = {
 
 // GAME
 let timescale = 1
-let updaterate = 60
+let fps = 30
 let loaded = false
 const vers = 0.01
 
@@ -139,8 +139,8 @@ function upload() {
     stats.video.life = upgvars.vidlifetime
     stats.video.cooldown = upgvars.cooldown
 
-    //const viral = (Math.random() >= 0.9)
-   // stats.video.viral = viral
+    const viral = (Math.random() >= 0.9)
+    stats.video.viral = viral
 
     uploadui.hidden = true
     cooldownui.hidden = false
@@ -149,13 +149,13 @@ function upload() {
     vidtitletext.innerText = stats.video.title
     thumb.innerText = stats.video.title
 
-    //if (viral) {
-   //    thumb.style.backgroundColor = "rgb(255, 255, 0)"
-    //}
+    if (viral) {
+       thumb.style.backgroundColor = "rgb(255, 255, 0)"
+    }
 
     step()
 
-    interval = setInterval(tick, ((1000 / timescale) / 60))
+    interval = setInterval(tick, ((1000 / timescale) / fps))
 }
 
 function step() {
@@ -200,27 +200,27 @@ function step() {
 
 function tick() {
     if (stats.video.cooldown > 0) {
-        stats.video.cooldown -= (1 / 60)
+        stats.video.cooldown -= (1 / (fps * timescale))
     }
     else {
         ready()
     }
     if (stats.video.life > 0) {
-        if (Math.random() < (0.9 + upgvars.viewchance)) {
-            const inc = (((Math.floor((((stats.subs * Math.random()) / 48) + ((stats.video.likes * Math.random()) / 8))) + 1) * upgvars.viewmult) / 60)
+        if (Math.random() <= (0.9 + upgvars.viewchance)) {
+            const inc = (((Math.floor((((stats.subs * Math.random()) / 48) + ((stats.video.likes * Math.random()) / 8))) + 1) * ((upgvars.viewmult * ((stats.video.viral) && 7) || 1))) / 60)
             stats.video.views += inc
             stats.views += inc
         }
-        if (Math.random() < (0.1 + upgvars.subchance)) {
+        if (Math.random() <= (0.1 + upgvars.subchance)) {
             stats.subs += (Math.floor((((((stats.video.views + stats.subs) * Math.random()) / 128)) + 1) * upgvars.submult) / 60)
         }
-        if (Math.random () < (0.15 + upgvars.likechance)) {
+        if (Math.random () <= (0.15 + upgvars.likechance)) {
             stats.video.likes += (((Math.floor(((stats.video.views + stats.subs) * Math.random()) / 600) + 1) * upgvars.likemult) / 60)
         }
-        else if (Math.random() < (0.2 + upgvars.dislikechance)) {
+        else if (Math.random() <= (0.2 + upgvars.dislikechance)) {
             stats.video.dislikes += (((Math.floor((stats.video.views * Math.random()) / 600) + 1) * upgvars.dislikemult) / 60)
         }
-        stats.video.life -= (1 / 60)
+        stats.video.life -= (1 / (fps * timescale))
     }  
     step()
 }
@@ -230,7 +230,7 @@ function save() { // Convert our save data to a readable format.. save to localS
         localStorage.setItem("save", JSON.stringify(stats))
     }
 }
-setInterval(save, ((updaterate * 1000) / timescale))
+setInterval(save, ((fps * 1000) / timescale))
 
 function load() { // Convert our saved data to a expendible format.. load from localStorage
     let data = localStorage.getItem("save")
@@ -273,7 +273,7 @@ function load() { // Convert our saved data to a expendible format.. load from l
             videoui.hidden = false
             vidtitletext.innerText = stats.video.title
             thumb.innerText = stats.video.title
-            interval = setInterval(tick, ((1000 / timescale) / 60))
+            interval = setInterval(tick, ((1000 / timescale) / fps))
         }
     }
 
@@ -314,7 +314,7 @@ function appendsetting(data) {
     if (data.Type == "bool") {
         const obj = booldummy.cloneNode(true)
 
-        obj.children[0].innerText = `${data.DisplayName || data.Name}: ${onoff(stats.settings[data.Name])}`
+        obj.children[0].innerText = `${data.DisplayName || data.Name}: ${onoff((((stats.settings[data.Name] != null)) && stats.settings[data.Name]) || data.Default)}`
         obj.children[1].innerText = data.Description
 
         obj.children[0].addEventListener("click", _ => {
