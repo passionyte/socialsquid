@@ -2,6 +2,8 @@
 
 // UI ELEMENTS
 
+const version = document.getElementById("version")
+
 // Upload
 const uploadui = document.getElementById("upload")
 const uploadbutton = document.getElementById("uploadbutton")
@@ -79,6 +81,7 @@ let upgvars = {
 let timescale = 1
 let updaterate = 60
 let loaded = false
+const vers = 0.01
 
 let interval
 
@@ -109,6 +112,9 @@ const settings = [
     {Name: "browsertext", DisplayName: "Browser Text", Description: "Site title displays video timeout length and number of subscribers. (i.e. (60) 7 subscribers - SocialSquid)", Type: "bool", Default: true},
     // {Name: "Test", Description: "Testing", Type: "input", Default: false}
 ]
+
+// HARDCODED
+version.innerText = `v${vers}`
 
 // FUNCTIONS
 function ready() {
