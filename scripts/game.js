@@ -152,6 +152,9 @@ function upload() {
     if (viral) {
        thumb.style.backgroundColor = "rgb(255, 255, 0)"
     }
+    else {
+        thumb.style.backgroundColor = "whitesmoke" // I actually have no idea if this works
+    }
 
     step()
 
@@ -274,6 +277,12 @@ function load() { // Convert our saved data to a expendible format.. load from l
             vidtitletext.innerText = stats.video.title
             thumb.innerText = stats.video.title
             interval = setInterval(tick, ((1000 / timescale) / fps))
+        }
+        if (stats.video.viral) {
+            thumb.style.backgroundColor = "rgb(255, 255, 0)"
+        }
+        else {
+            thumb.style.backgroundColor = "whitesmoke" // I actually have no idea if this works
         }
     }
 
