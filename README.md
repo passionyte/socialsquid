@@ -11,3 +11,5 @@ Gold: 1,000,000 subscribers <br>
 Diamond: 10,000,000 subscribers <br> 
 Ruby: 50,000,000 subscribers <br>
 Red Diamond: 100,000,000 subscribers
+
+# Enjoy! ♡✧( ु•⌄• )

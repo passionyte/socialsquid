@@ -56,22 +56,21 @@
             <button class="centerbutton" id="settingsbutton">Settings</button>
             <button class="centerbutton" style="left: 80%" id="statsbutton">Stats</button>
         </div> <hr>
-        <div class="menu" id="settings" hidden>
+        <div class="menu" id="settingsmenu" hidden>
             <a class="bigtext">Settings</a> <hr>
-            <div class="setting" id="booldummy" hidden> 
-                <hr>
-                <button class="settingsbutton">Setting Name: ON</button>
-                <a class="upgdesc">Boolean Setting Description</a>  
-                <hr>
-            </div>
-            <div class="setting" id="inputdummy" hidden> 
-                <hr>
-                <input class="settingsinput"></input>
-                <a class="upgdesc">Input Setting Description</a>  
-                <hr>
+            <div class="settingslist" id="settingslist">
+                <div class="setting" id="booldummy" hidden> 
+                    <button class="settingsbutton">Boolean Setting Name: ON</button>
+                    <a class="upgdesc">Boolean Setting Description</a>  
+                </div>
+                <div class="fiftyspace" id="settingsspace" hidden></div>
+                <div class="setting" id="inputdummy" hidden> 
+                    <input class="settingsinput"></input>
+                    <a class="upgdesc">Input Setting Description</a>  
+                </div>
             </div>
         </div>
-        <div class="menu" id="stats" hidden>
+        <div class="menu" id="statsmenu" hidden>
             <a class="bigtext">Stats</a> <hr>
         </div>
     </div>
@@ -81,9 +80,9 @@
         <div id="upgrades">
             <div class="upgrade" id="upgdummy" hidden>
                 <img class="upgicon">
-                <a class="upgtitle">Name - # views</a> <br>
-                <a class="upgdesc">Description</a> <br>
-                <button class="upgtitle">Purchase</button>
+                <a class="upgtitle">Name - # views</a>
+                <a class="upgdesc">Description</a>
+                <button class="upgbutton">Purchase</button>
             </div>
         </div>
     </div>

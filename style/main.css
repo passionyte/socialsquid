@@ -80,7 +80,7 @@
 
 .upgrade {
     width: 75%;
-    height: 80px;
+    height: 90px;
     background-color: white;
     font-family: 'Courier New', Courier, monospace;
     margin-bottom: 20px;
@@ -96,11 +96,23 @@
 .upgtitle {
     margin-left: 20px;
     font-weight: bold;
+    font-size: medium;
+}
+
+.upgbutton {
+    margin-left: 80px;
+    font-weight: bold;
+    font-size: x-small;
+    float: left
 }
 
 .upgdesc {
     margin-left: 20px;
-    font-size: small
+    font-size: small;
+    float: left;
+    text-align: left;
+    width: 60%;
+    margin-bottom: 5px;
 }
 
 .center {
@@ -121,6 +133,27 @@
     position: absolute;
     width: 20%;
     height: 7%;
-    font-family:'Courier New', Courier, monospace;
-    font-weight:bold;
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: bold;
+}
+
+.settingsbutton {
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: bold;
+    float: left;
+}
+
+.setting {
+    font-family: 'Courier New', Courier, monospace;
+    background-color: lightgray;
+    border-radius: 20px;
+    height: 5%;
+}
+
+.hundredspace {
+    margin: 100px
+}
+
+.fiftyspace {
+    margin: 50px
 }
