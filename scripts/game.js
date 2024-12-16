@@ -54,6 +54,8 @@ let stats = {
     "subs": 0,
     "views": 0,
     "videos": 0,
+    "timesviral": 0,
+    "totalviews": 0,
     "ownedupgrades": [],
     "video": {
         views: 0,
@@ -76,17 +78,19 @@ let upgvars = {
     "dislikemult": 1,
     "cooldown": 120,
     "vidlifetime": 60,
+    "viralchance": 0,
 }
 
 // GAME
 let timescale = 1
 let fps = 30
 let loaded = false
-const vers = "0.014 alpha"
+const vers = "0.015 alpha"
 
 let interval
 
 const upgrades = [
+    // Subscriber Progression
     {Name: "Amateur Videos", Cost: 100, Description: "Well, you gotta start somewhere. (-10s cooldown)", Stat: "cooldown", Inc: -10, Available: true},
     {Name: "Share With Friends", Cost: 100, Description: "Your friends are sure to check out your videos! (+10% views)", Stat: "viewmult", Inc: 0.1, Available: true},
     {Name: "Subscriber Begging", Cost: 500, Description: "Begging for subscribers raises the chance you get some! (+5% chance for subs)", Stat: "subchance", Inc: 0.05, Available: true},
@@ -107,7 +111,9 @@ const upgrades = [
     {Name: "Sponsorships", Cost: 1000000, Description: "You get some sponsors which help you produce longer and more engaging videos. (+15s vid lifetime)", Stat: "vidlifetime", Inc: 15, Available: true, Requirements: {subs: 100000}},
     {Name: "Collaboration", Cost: 5000000, Description: "Collaborate with other creators! (+10% views)", Stat: "viewmult", Inc: 0.1, Available: true, Requirements: {subs: 500000}},
     {Name: "Directly Sourced Fiber", Cost: 10000000, Description: "Directly source your Fiber Wi-Fi from your ISP. Expensive but lightning fast. (-20s cooldown)", Stat: "cooldown", Inc: -20, Available: true, Requirements: {subs: 1000000}},
-    {Name: "Professional Videos", Cost: 10000000, Description: "Hey now, you're an all-star.. now gimme your views. (-10s cooldown)", Stat: "cooldown", Inc: -10, Available: true, Requirements: {subs: 1000000}}
+    {Name: "Professional Videos", Cost: 10000000, Description: "Hey now, you're an all-star.. now gimme your views. (-10s cooldown)", Stat: "cooldown", Inc: -10, Available: true, Requirements: {subs: 1000000}},
+    // Niche
+    {Name: "Trendy Squid is Trendy", Cost: 777777, Description: "Squids communicate using patterns and thus be trendy with one another... Yes this makes little sense. (+10% viral chance)", Stat: "viralchance", Inc: 0.1, Available: true, Requirements: {timesviral: 7}},
 ]
 const settings = [
     {Name: "browsertext", DisplayName: "Browser Text", Description: "Site title displays video timeout length and number of subscribers. (i.e. (60) 7 subscribers - SocialSquid)", Type: "bool", Default: true},
@@ -140,7 +146,7 @@ function upload() {
     stats.video.life = upgvars.vidlifetime
     stats.video.cooldown = upgvars.cooldown
 
-    const viral = (Math.random() >= 0.9)
+    const viral = (Math.random() >= (0.9 - upgvars.viralchance))
     stats.video.viral = viral
 
     viraltext.hidden = (!viral)
@@ -154,6 +160,7 @@ function upload() {
 
     if (viral) {
        thumb.style.backgroundColor = "rgb(255, 255, 0)"
+       stats.timesviral++
     }
     else {
         thumb.style.backgroundColor = "white" // I actually have no idea if this works
@@ -216,6 +223,7 @@ function tick() {
             const inc = (((Math.floor((((stats.subs * Math.random()) / 48) + ((stats.video.likes * Math.random()) / 8))) + 1) * ((upgvars.viewmult * ((stats.video.viral) && 7) || 1))) / 60)
             stats.video.views += inc
             stats.views += inc
+            stats.totalviews += inc
         }
         if (Math.random() <= (0.1 + upgvars.subchance)) {
             stats.subs += (Math.floor((((((stats.video.views + stats.subs) * Math.random()) / 128)) + 1) * upgvars.submult) / 60)
