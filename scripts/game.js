@@ -401,7 +401,7 @@ function drawshop() {
         const upgrade = upgrades[i]
 
         if (!find(upgrade.Name, upgbuttons)) {
-            if ((upgrade.Available) && (reqsmet(upgrade.Requirements)) && (!find(upgrade.Name, stats.ownedupgrades))) {
+            if ((upgrade.Available) && (!upgrade.Requirements || reqsmet(upgrade.Requirements)) && (!find(upgrade.Name, stats.ownedupgrades))) {
                 appendupgrade(upgrade)
             }
         }
