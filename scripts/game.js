@@ -88,7 +88,7 @@ let upgvars = {
 let timescale = 1
 let fps = 30
 let loaded = false
-const vers = "0.015 alpha"
+const vers = "0.017 alpha"
 
 let interval
 
