@@ -21,6 +21,7 @@ const vidviewtext = document.getElementById("vidviews")
 const likebar = document.getElementById("likebar")
 const likes = document.getElementById("likes")
 const dislikes = document.getElementById("dislikes")
+const viraltext = document.getElementById("viraltext")
 
 // Channel
 const totalsubs = document.getElementById("totalsubs")
@@ -87,26 +88,26 @@ let interval
 
 const upgrades = [
     {Name: "Amateur Videos", Cost: 100, Description: "Well, you gotta start somewhere. (-10s cooldown)", Stat: "cooldown", Inc: -10, Available: true},
-    {Name: "Share With Friends", Cost: 100, Description: "Your friends are sure to check out your videos! (+5% views)", Stat: "viewmult", Inc: 0.05, Available: true},
-    {Name: "Subscriber Begging", Cost: 500, Description: "Begging for subscribers raises the chance you get some! (+3% chance for subs)", Stat: "subchance", Inc: 0.03, Available: true},
+    {Name: "Share With Friends", Cost: 100, Description: "Your friends are sure to check out your videos! (+10% views)", Stat: "viewmult", Inc: 0.1, Available: true},
+    {Name: "Subscriber Begging", Cost: 500, Description: "Begging for subscribers raises the chance you get some! (+5% chance for subs)", Stat: "subchance", Inc: 0.05, Available: true},
     {Name: "Faster Wi-Fi", Cost: 500, Description: "Wi-Fi will time out less if you upgrade it to be faster. (-10s cooldown)", Stat: "cooldown", Inc: -10, Available: true},
     {Name: "Smash Like", Cost: 1000, Description: "Asking your viewers to smash the like button will increase your likes! (+5% chance for likes)", Stat: "likechance", Inc: 0.05, Available: true},
     {Name: "Experimentation", Cost: 3000, Description: "Having experimentation will draw more recommendations from the algorithm. (+5% views)", Stat: "viewmult", Inc: 0.05, Available: true},
-    {Name: "Smarter Titles", Cost: 5000, Description: "Better titles will make more people click. (Guaranteed chance for views)", Stat: "viewchance", Inc: 0.1, Available: true, MinSubs: 500},
-    {Name: "Commentary", Cost: 5000, Description: "Adding commentary to your videos will make them more engaging! (+4% chance for subs)", Stat: "subchance", Inc: 0.04, Available: true, MinSubs: 500},
-    {Name: "Trending Topic", Cost: 10000, Description: "Making videos on trending topics will increase the longevity. (+15s vid lifetime)", Stat: "vidlifetime", Inc: 15, Available: true, MinSubs: 1000},
-    {Name: "Webcam", Cost: 10000, Description: "Use a webcam for better viewer engagement. (+5% chance for subs)", Stat: "subchance", Inc: 0.05, Available: true, MinSubs: 1000},
-    {Name: "Decent Videos", Cost: 25000, Description: "Seems like you've gotten more experienced! But, you gotta pay.. for some reason ;3 (-10s cooldown)", Stat: "cooldown", Inc: -10, Available: true, MinSubs: 2000},
-    {Name: "HD Video", Cost: 50000, Description: "Upgrade your device for better quality so less people dislike! (-5% chance for dislikes)", Stat: "dislikechance", Inc: -0.05, Available: true, MinSubs: 5000},
-    {Name: "Even-Faster Wi-Fi", Cost: 50000, Description: "Reduce Wi-Fi timeout by making it EVEN-FASTER! (-15s cooldown)", Stat: "cooldown", Inc: -15, Available: true, MinSubs: 5000},
-    {Name: "Custom Thumbnails", Cost: 100000, Description: "Begin creating custom thumbnails people will actually click! (+10% views)", Stat: "viewmult", Inc: 0.1, Available: true, MinSubs: 10000},
-    {Name: "Unique Content", Cost: 100000, Description: "Having more unique content will make your videos stand out from others. (+20s vid lifetime)", Stat: "vidlifetime", Inc: 20, Available: true, MinSubs: 10000},
-    {Name: "Fiber Wi-Fi", Cost: 500000, Description: "Upgrade your even-faster Wi-Fi to Fiber for even faster uploads. (-20s cooldown)", Stat: "cooldown", Inc: -20, Available: true, MinSubs: 50000},
-    {Name: "Favorability", Cost: 1000000, Description: "You've grown to the point people love you! Just believe! (+8% chance for likes)", Stat: "likechance", Inc: 0.08, Available: true, MinSubs: 100000},
-    {Name: "Sponsorships", Cost: 1000000, Description: "You get some sponsors which help you produce longer and more engaging videos. (+15s vid lifetime)", Stat: "vidlifetime", Inc: 15, Available: true, MinSubs: 100000},
-    {Name: "Collaboration", Cost: 5000000, Description: "Collaborate with other creators! (+10% views)", Stat: "viewmult", Inc: 0.1, Available: true, MinSubs: 500000},
-    {Name: "Directly Sourced Fiber", Cost: 10000000, Description: "Directly source your Fiber Wi-Fi from your ISP. Expensive but lightning fast. (-20s cooldown)", Stat: "cooldown", Inc: -20, Available: true, MinSubs: 1000000},
-    {Name: "Professional Videos", Cost: 10000000, Description: "Hey now, you're an all-star.. now gimme your views. (-10s cooldown)", Stat: "cooldown", Inc: -10, Available: true, MinSubs: 1000000}
+    {Name: "Smarter Titles", Cost: 5000, Description: "Better titles will make more people click. (Guaranteed chance for views)", Stat: "viewchance", Inc: 0.1, Available: true, Requirements: {subs: 500}},
+    {Name: "Commentary", Cost: 5000, Description: "Adding commentary to your videos will make them more engaging! (+5% chance for subs)", Stat: "subchance", Inc: 0.05, Available: true, Requirements: {subs: 500}},
+    {Name: "Trending Topic", Cost: 10000, Description: "Making videos on trending topics will increase the longevity. (+15s vid lifetime)", Stat: "vidlifetime", Inc: 15, Available: true, Requirements: {subs: 1000}},
+    {Name: "Webcam", Cost: 10000, Description: "Use a webcam for better viewer engagement. (+5% chance for subs)", Stat: "subchance", Inc: 0.05, Available: true, Requirements: {subs: 1000}},
+    {Name: "Decent Videos", Cost: 25000, Description: "Seems like you've gotten more experienced! But, you gotta pay.. for some reason ;3 (-10s cooldown)", Stat: "cooldown", Inc: -10, Available: true, Requirements: {subs: 2000}},
+    {Name: "HD Video", Cost: 50000, Description: "Upgrade your device for better quality so less people dislike! (-5% chance for dislikes)", Stat: "dislikechance", Inc: -0.05, Available: true, Requirements: {subs: 5000}},
+    {Name: "Even-Faster Wi-Fi", Cost: 50000, Description: "Reduce Wi-Fi timeout by making it EVEN-FASTER! (-15s cooldown)", Stat: "cooldown", Inc: -15, Available: true, Requirements: {subs: 5000}},
+    {Name: "Custom Thumbnails", Cost: 100000, Description: "Begin creating custom thumbnails people will actually click! (+10% views)", Stat: "viewmult", Inc: 0.1, Available: true, Requirements: {subs: 10000}},
+    {Name: "Unique Content", Cost: 100000, Description: "Having more unique content will make your videos stand out from others. (+20s vid lifetime)", Stat: "vidlifetime", Inc: 20, Available: true, Requirements: {subs: 10000}},
+    {Name: "Fiber Wi-Fi", Cost: 500000, Description: "Upgrade your even-faster Wi-Fi to Fiber for even faster uploads. (-20s cooldown)", Stat: "cooldown", Inc: -20, Available: true, Requirements: {subs: 50000}},
+    {Name: "Favorability", Cost: 1000000, Description: "You've grown to the point people love you! Just believe! (+8% chance for likes)", Stat: "likechance", Inc: 0.08, Available: true, Requirements: {subs: 100000}},
+    {Name: "Sponsorships", Cost: 1000000, Description: "You get some sponsors which help you produce longer and more engaging videos. (+15s vid lifetime)", Stat: "vidlifetime", Inc: 15, Available: true, Requirements: {subs: 100000}},
+    {Name: "Collaboration", Cost: 5000000, Description: "Collaborate with other creators! (+10% views)", Stat: "viewmult", Inc: 0.1, Available: true, Requirements: {subs: 500000}},
+    {Name: "Directly Sourced Fiber", Cost: 10000000, Description: "Directly source your Fiber Wi-Fi from your ISP. Expensive but lightning fast. (-20s cooldown)", Stat: "cooldown", Inc: -20, Available: true, Requirements: {subs: 1000000}},
+    {Name: "Professional Videos", Cost: 10000000, Description: "Hey now, you're an all-star.. now gimme your views. (-10s cooldown)", Stat: "cooldown", Inc: -10, Available: true, Requirements: {subs: 1000000}}
 ]
 const settings = [
     {Name: "browsertext", DisplayName: "Browser Text", Description: "Site title displays video timeout length and number of subscribers. (i.e. (60) 7 subscribers - SocialSquid)", Type: "bool", Default: true},
@@ -141,6 +142,8 @@ function upload() {
 
     const viral = (Math.random() >= 0.9)
     stats.video.viral = viral
+
+    viraltext.hidden = (!viral)
 
     uploadui.hidden = true
     cooldownui.hidden = false
@@ -243,7 +246,6 @@ function load() { // Convert our saved data to a expendible format.. load from l
     
         for (const stat in stats) {
             if (!savedata[stat]) {
-                // console.log(`${stat} missing from legacy data`)
                 savedata[stat] = stats[stat]
             }
         }
@@ -376,12 +378,22 @@ function find(string, table, dict) {
     return (result)
 }
 
+function reqsmet(reqs) {
+    for (const req in reqs) {
+        if (stats[req] && (stats[req] >= reqs[req])) {
+            return true
+        }
+    }
+
+    return false
+}
+
 function drawshop() {
     for (i = 0; (i < upgrades.length); i++) {
         const upgrade = upgrades[i]
 
         if (!find(upgrade.Name, upgbuttons)) {
-            if (((upgrade.Available) && (!upgrade.MinSubs || (stats.subs >= upgrade.MinSubs))) && (!find(upgrade.Name, stats.ownedupgrades))) {
+            if ((upgrade.Available) && (reqsmet(upgrade.Requirements)) && (!find(upgrade.Name, stats.ownedupgrades))) {
                 appendupgrade(upgrade)
             }
         }
