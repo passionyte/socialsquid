@@ -21,6 +21,11 @@
     font-family:'Courier New', Courier, monospace;
 }
 
+.tinytext {
+    font-family:'Courier New', Courier, monospace;
+    font-size: small
+}
+
 .bigtext {
     font-family:'Courier New', Courier, monospace;
     font-weight:bold;

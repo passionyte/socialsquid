@@ -28,6 +28,8 @@ const totalsubs = document.getElementById("totalsubs")
 const totalviews = document.getElementById("totalviews")
 const totalvids = document.getElementById("totalvids")
 const playbutton = document.getElementById("playbutton")
+const pbboostdiv = document.getElementById("buttonboost")
+const pbboosttext = document.getElementById("buttonboosttext")
 
 // Shop
 const upgdummy = document.getElementById("upgdummy")
@@ -79,6 +81,7 @@ let upgvars = {
     "cooldown": 120,
     "vidlifetime": 60,
     "viralchance": 0,
+    "buttonboost": 1
 }
 
 // GAME
@@ -205,7 +208,18 @@ function step() {
         timeout.innerText = `Bandwidth timed out: ${roundedcooldown} seconds`
     }
     if (roundedsubs >= 100000) {
-        playbutton.src = `images/${(((roundedsubs >= 100000000) && "reddiamond") || ((roundedsubs >= 50000000) && "ruby") || ((roundedsubs >= 10000000) && "diamond") || ((roundedsubs >= 1000000) && "gold") || ((roundedsubs >= 100000) && "silver"))}.png`
+        const pblevel = ((roundedsubs >= 100000000) && 5) || ((roundedsubs >= 50000000) && 4) || ((roundedsubs >= 10000000) && 3) || ((roundedsubs >= 1000000) && 2) || 1
+        playbutton.src = `images/${(((pblevel == 5) && "reddiamond") || ((pblevel == 4) && "ruby") || ((pblevel == 3) && "diamond") || ((pblevel == 2) && "gold") || "silver")}.png`
+        
+        const boost = (1 + (pblevel / 10))
+        if (stats.buttonboost != boost) {
+            stats.buttonboost = boost
+
+            if (pbboostdiv.hidden) {
+                pbboostdiv.hidden = false
+            }
+            pbboosttext.innerText = `Play button boosting Subscribers and Views by ${(pblevel * 10)}%!`
+        }
     }
     
     drawshop()
@@ -220,13 +234,13 @@ function tick() {
     }
     if (stats.video.life > 0) {
         if (Math.random() <= (0.9 + upgvars.viewchance)) {
-            const inc = (((Math.floor((((stats.subs * Math.random()) / 48) + ((stats.video.likes * Math.random()) / 8))) + 1) * ((upgvars.viewmult * ((stats.video.viral) && 7) || 1))) / 60)
+            const inc = (((Math.floor((((stats.subs * Math.random()) / 48) + ((stats.video.likes * Math.random()) / 8))) + 1) * (((upgvars.viewmult * upgvars.buttonboost) * ((stats.video.viral) && 7) || 1))) / 60)
             stats.video.views += inc
             stats.views += inc
             stats.totalviews += inc
         }
         if (Math.random() <= (0.1 + upgvars.subchance)) {
-            stats.subs += (Math.floor((((((stats.video.views + stats.subs) * Math.random()) / 128)) + 1) * upgvars.submult) / 60)
+            stats.subs += (Math.floor((((((stats.video.views + stats.subs) * Math.random()) / 128)) + 1) * (upgvars.submult * upgvars.buttonboost)) / 60)
         }
         if (Math.random () <= (0.15 + upgvars.likechance)) {
             stats.video.likes += (((Math.floor(((stats.video.views + stats.subs) * Math.random()) / 600) + 1) * upgvars.likemult) / 60)
