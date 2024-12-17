@@ -88,7 +88,7 @@ let upgvars = {
 let timescale = 1
 let fps = 30
 let loaded = false
-const vers = "0.017 alpha"
+const vers = "0.018 alpha"
 
 let interval
 
@@ -99,24 +99,27 @@ const upgrades = [
     {Name: "Subscriber Begging", Cost: 500, Description: "Begging for subscribers raises the chance you get some! (+5% chance for subs)", Stat: "subchance", Inc: 0.05, Available: true},
     {Name: "Faster Wi-Fi", Cost: 500, Description: "Wi-Fi will time out less if you upgrade it to be faster. (-10s cooldown)", Stat: "cooldown", Inc: -10, Available: true},
     {Name: "Smash Like", Cost: 1000, Description: "Asking your viewers to smash the like button will increase your likes! (+5% chance for likes)", Stat: "likechance", Inc: 0.05, Available: true},
-    {Name: "Experimentation", Cost: 3000, Description: "Having experimentation will draw more recommendations from the algorithm. (+5% views)", Stat: "viewmult", Inc: 0.05, Available: true},
-    {Name: "Smarter Titles", Cost: 5000, Description: "Better titles will make more people click. (Guaranteed chance for views)", Stat: "viewchance", Inc: 0.1, Available: true, Requirements: {subs: 500}},
+    {Name: "Smarter Titles", Cost: 1000, Description: "Better titles will make more people click. (Guaranteed chance for views)", Stat: "viewchance", Inc: 0.1, Available: true},
+    {Name: "Experimentation", Cost: 2500, Description: "Having experimentation will draw more recommendations from the algorithm. (+10% views)", Stat: "viewmult", Inc: 0.1, Available: true, Requirements: {subs: 100}},
+    {Name: "Enthusiasm", Cost: 2500, Description: "Perhaps not being boring may help your watch time! (+10s video lifetime)", Stat: "vidlifetime", Inc: 10, Available: true, Requirements: {subs: 100}},
     {Name: "Commentary", Cost: 5000, Description: "Adding commentary to your videos will make them more engaging! (+5% chance for subs)", Stat: "subchance", Inc: 0.05, Available: true, Requirements: {subs: 500}},
+    {Name: "Giveaways", Cost: 5000, Description: "Say you are doing a giveaway, people are sure to like... (+5% chance for likes)", Stat: "likechance", Inc: 0.05, Available: true, Requirements: {subs: 500}},
     {Name: "Trending Topic", Cost: 10000, Description: "Making videos on trending topics will increase the longevity. (+15s vid lifetime)", Stat: "vidlifetime", Inc: 15, Available: true, Requirements: {subs: 1000}},
     {Name: "Webcam", Cost: 10000, Description: "Use a webcam for better viewer engagement. (+5% chance for subs)", Stat: "subchance", Inc: 0.05, Available: true, Requirements: {subs: 1000}},
-    {Name: "Decent Videos", Cost: 25000, Description: "Seems like you've gotten more experienced! But, you gotta pay.. for some reason ;3 (-10s cooldown)", Stat: "cooldown", Inc: -10, Available: true, Requirements: {subs: 2000}},
+    {Name: "Hit the bell", Cost: 10000, Description: "Tell viewers to hit the notification bell, makes them return more often! (+15% views)", Stat: "viewmult", Inc: 0.15, Available: true, Requirements: {subs: 1000}},
+    {Name: "Decent Videos", Cost: 25000, Description: "Seems like you've gotten more experienced! But, you gotta pay.. for some reason (-10s cooldown)", Stat: "cooldown", Inc: -10, Available: true, Requirements: {subs: 2000}},
     {Name: "HD Video", Cost: 50000, Description: "Upgrade your device for better quality so less people dislike! (-5% chance for dislikes)", Stat: "dislikechance", Inc: -0.05, Available: true, Requirements: {subs: 5000}},
     {Name: "Even-Faster Wi-Fi", Cost: 50000, Description: "Reduce Wi-Fi timeout by making it EVEN-FASTER! (-15s cooldown)", Stat: "cooldown", Inc: -15, Available: true, Requirements: {subs: 5000}},
-    {Name: "Custom Thumbnails", Cost: 100000, Description: "Begin creating custom thumbnails people will actually click! (+10% views)", Stat: "viewmult", Inc: 0.1, Available: true, Requirements: {subs: 10000}},
+    {Name: "Custom Thumbnails", Cost: 100000, Description: "Begin creating custom thumbnails people will actually click! (+20% views)", Stat: "viewmult", Inc: 0.2, Available: true, Requirements: {subs: 10000}},
     {Name: "Unique Content", Cost: 100000, Description: "Having more unique content will make your videos stand out from others. (+20s vid lifetime)", Stat: "vidlifetime", Inc: 20, Available: true, Requirements: {subs: 10000}},
     {Name: "Fiber Wi-Fi", Cost: 500000, Description: "Upgrade your even-faster Wi-Fi to Fiber for even faster uploads. (-20s cooldown)", Stat: "cooldown", Inc: -20, Available: true, Requirements: {subs: 50000}},
     {Name: "Favorability", Cost: 1000000, Description: "You've grown to the point people love you! Just believe! (+8% chance for likes)", Stat: "likechance", Inc: 0.08, Available: true, Requirements: {subs: 100000}},
     {Name: "Sponsorships", Cost: 1000000, Description: "You get some sponsors which help you produce longer and more engaging videos. (+15s vid lifetime)", Stat: "vidlifetime", Inc: 15, Available: true, Requirements: {subs: 100000}},
-    {Name: "Collaboration", Cost: 5000000, Description: "Collaborate with other creators! (+10% views)", Stat: "viewmult", Inc: 0.1, Available: true, Requirements: {subs: 500000}},
+    {Name: "Collaboration", Cost: 5000000, Description: "Collaborate with other creators! (+25% views)", Stat: "viewmult", Inc: 0.25, Available: true, Requirements: {subs: 500000}},
     {Name: "Directly Sourced Fiber", Cost: 10000000, Description: "Directly source your Fiber Wi-Fi from your ISP. Expensive but lightning fast. (-20s cooldown)", Stat: "cooldown", Inc: -20, Available: true, Requirements: {subs: 1000000}},
     {Name: "Professional Videos", Cost: 10000000, Description: "Hey now, you're an all-star.. now gimme your views. (-10s cooldown)", Stat: "cooldown", Inc: -10, Available: true, Requirements: {subs: 1000000}},
     // Niche
-    {Name: "Trendy Squid is Trendy", Cost: 777777, Description: "Squids communicate using patterns and thus be trendy with one another... Yes this makes little sense. (+10% viral chance)", Stat: "viralchance", Inc: 0.1, Available: true, Requirements: {timesviral: 7}},
+    {Name: "Trendy Squid is Trendy", Cost: 777777, Description: "Just be trendy™ (+10% viral chance)", Stat: "viralchance", Inc: 0.1, Available: true, Requirements: {timesviral: 7}},
 ]
 const settings = [
     {Name: "browsertext", DisplayName: "Browser Text", Description: "Site title displays video timeout length and number of subscribers. (i.e. (60) 7 subscribers - SocialSquid)", Type: "bool", Default: true},
@@ -211,14 +214,14 @@ function step() {
         const pblevel = ((roundedsubs >= 100000000) && 5) || ((roundedsubs >= 50000000) && 4) || ((roundedsubs >= 10000000) && 3) || ((roundedsubs >= 1000000) && 2) || 1
         playbutton.src = `images/${(((pblevel == 5) && "reddiamond") || ((pblevel == 4) && "ruby") || ((pblevel == 3) && "diamond") || ((pblevel == 2) && "gold") || "silver")}.png`
         
-        const boost = (1 + (pblevel / 10))
+        const boost = (1 + (pblevel / 4))
         if (stats.buttonboost != boost) {
             stats.buttonboost = boost
 
             if (pbboostdiv.hidden) {
                 pbboostdiv.hidden = false
             }
-            pbboosttext.innerText = `Play button boosting Subscribers and Views by ${(pblevel * 10)}%!`
+            pbboosttext.innerText = `Play button boosting Subscribers and Views by ${(pblevel * 25)}%!`
         }
     }
     
