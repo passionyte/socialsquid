@@ -88,7 +88,7 @@ let upgvars = {
 let timescale = 1
 let fps = 30
 let loaded = false
-const vers = "0.018 alpha"
+const vers = "0.019 alpha"
 
 let interval
 
@@ -261,7 +261,6 @@ function save() { // Convert our save data to a readable format.. save to localS
         localStorage.setItem("save", JSON.stringify(stats))
     }
 }
-setInterval(save, ((fps * 1000) / timescale))
 
 function load() { // Convert our saved data to a expendible format.. load from localStorage
     let data = localStorage.getItem("save")
@@ -309,7 +308,7 @@ function load() { // Convert our saved data to a expendible format.. load from l
             thumb.style.backgroundColor = "rgb(255, 255, 0)"
         }
         else {
-            thumb.style.backgroundColor = "white" // I actually have no idea if this works
+            thumb.style.backgroundColor = "white"
         }
     }
 
@@ -317,7 +316,6 @@ function load() { // Convert our saved data to a expendible format.. load from l
 
     step()
 }
-load()
 
 function onoff(boolean) {
     return (((boolean) && "ON") || "OFF")
@@ -459,3 +457,8 @@ function statsmenu() {
 uploadbutton.addEventListener("click", upload)
 settingsbutton.addEventListener("click", settingsmenu)
 statsbutton.addEventListener("click", statsmenu)
+
+// LOADING
+load()
+setInterval(save, ((fps * 1000) / timescale))
+document.getElementById("loadscreen").hidden = true

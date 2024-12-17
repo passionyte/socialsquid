@@ -2,12 +2,14 @@
 
 <head>
     <title>SocialSquid</title>
-    <script src="scripts/game.js" defer></script>
     <link rel="stylesheet" href="./style/main.css">
 </head>
 
 
 <body>
+    <div class="title" id="loadscreen" style="width: 100%; height: 100%">
+        <a style="margin-left: 50%; margin-top: 50%">Loading...</a>
+    </div>
     <div class="left">
         <a class="title">SocialSquid: The Game</a> <br>
         <a class="smalltext" id="version">...</a>
@@ -18,7 +20,7 @@
             <a class="text" id="totalsubs">0 Subscribers</a> <br>
             <a class="text" id="totalviews">0 Views</a> <br>
             <a class="text" id="totalvids">0 Videos</a> <br>
-            <img id="playbutton">
+            <img id="playbutton" style="width: 150px; height: 100px">
             <div id="buttonboost" hidden>
                 <br>
                 <a class="tinytext" id="buttonboosttext">Play button boosting Subscribers and Views by 10%!</a>
@@ -53,8 +55,8 @@
                         <div class="likebar" id="likebar"></div>
                     </div>
                     <div class="ratings">
-                        <a class="liketext" id="likes">0</a>
-                        <a class="disliketext" id="dislikes">0</a>
+                        <a id="likes">0</a>
+                        <a style="float: right" id="dislikes">0</a>
                     </div>
                 </div>
                 
@@ -64,7 +66,7 @@
     <div class="center">
         <div class="centerbuttons">
             <button class="centerbutton" id="settingsbutton">Settings</button>
-            <button class="centerbutton" style="left: 80%" id="statsbutton">Stats</button>
+            <button class="centerbutton" style="float: right" id="statsbutton">Stats</button>
         </div> <hr>
         <div class="menu" id="settingsmenu" hidden>
             <a class="bigtext">Settings</a> <hr>
@@ -73,7 +75,7 @@
                     <button class="settingsbutton">Boolean Setting Name: ON</button>
                     <a class="upgdesc">Boolean Setting Description</a>  
                 </div>
-                <div class="fiftyspace" id="settingsspace" hidden></div>
+                <div style="margin: 50px" id="settingsspace" hidden></div>
                 <div class="setting" id="inputdummy" hidden> 
                     <input class="settingsinput"></input>
                     <a class="upgdesc">Input Setting Description</a>  
@@ -96,6 +98,8 @@
             </div>
         </div>
     </div>
+
+    <script src="scripts/game.js" defer></script>
 </body>
 
 </html>
