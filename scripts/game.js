@@ -217,10 +217,10 @@ function step() {
         const boost = (1 + (pblevel / 4))
         if (stats.buttonboost != boost) {
             stats.buttonboost = boost
-            pbboosttext.innerText = `Play button boosting Subscribers and Views by ${(pblevel * 25)}%!`
         }
         if (pbboostdiv.hidden) {
             pbboostdiv.hidden = false
+            pbboosttext.innerText = `Play button boosting Subscribers and Views by ${(pblevel * 25)}%!`
         }
     }
     
