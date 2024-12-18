@@ -215,10 +215,8 @@ function step() {
         playbutton.src = `images/${(((pblevel == 5) && "reddiamond") || ((pblevel == 4) && "ruby") || ((pblevel == 3) && "diamond") || ((pblevel == 2) && "gold") || "silver")}.png`
         
         const boost = (1 + (pblevel / 4))
-        if (stats.buttonboost != boost) {
+        if (stats.buttonboost != boost || pbboostdiv.hidden) {
             stats.buttonboost = boost
-        }
-        if (pbboostdiv.hidden) {
             pbboostdiv.hidden = false
             pbboosttext.innerText = `Play button boosting Subscribers and Views by ${(pblevel * 25)}%!`
         }
