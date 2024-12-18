@@ -88,7 +88,7 @@ let upgvars = {
 let timescale = 1
 let fps = 30
 let loaded = false
-const vers = "0.019 alpha"
+const vers = "0.02 alpha"
 
 let interval
 
@@ -115,9 +115,11 @@ const upgrades = [
     {Name: "Fiber Wi-Fi", Cost: 500000, Description: "Upgrade your even-faster Wi-Fi to Fiber for even faster uploads. (-20s cooldown)", Stat: "cooldown", Inc: -20, Available: true, Requirements: {subs: 50000}},
     {Name: "Favorability", Cost: 1000000, Description: "You've grown to the point people love you! Just believe! (+8% chance for likes)", Stat: "likechance", Inc: 0.08, Available: true, Requirements: {subs: 100000}},
     {Name: "Sponsorships", Cost: 1000000, Description: "You get some sponsors which help you produce longer and more engaging videos. (+15s vid lifetime)", Stat: "vidlifetime", Inc: 15, Available: true, Requirements: {subs: 100000}},
-    {Name: "Collaboration", Cost: 5000000, Description: "Collaborate with other creators! (+25% views)", Stat: "viewmult", Inc: 0.25, Available: true, Requirements: {subs: 500000}},
-    {Name: "Directly Sourced Fiber", Cost: 10000000, Description: "Directly source your Fiber Wi-Fi from your ISP. Expensive but lightning fast. (-20s cooldown)", Stat: "cooldown", Inc: -20, Available: true, Requirements: {subs: 1000000}},
-    {Name: "Professional Videos", Cost: 10000000, Description: "Hey now, you're an all-star.. now gimme your views. (-10s cooldown)", Stat: "cooldown", Inc: -10, Available: true, Requirements: {subs: 1000000}},
+    {Name: "Collaboration", Cost: 2000000, Description: "Collaborate with other creators! (+25% views)", Stat: "viewmult", Inc: 0.25, Available: true, Requirements: {subs: 500000}},
+    {Name: "Longevity", Cost: 3000000, Description: "Looooongevity! (+15s vid lifetime)", Stat: "vidlifetime", Inc: 15, Available: true, Requirements: {subs: 1000000}},
+    {Name: "More Subs", Cost: 3000000, Description: "Subs. Subs. And... More Subs... Not sandwiches right? (+5% subs)", Stat: "submult", Inc: 0.05, Available: true, Requirements: {subs: 1000000}},
+    {Name: "Directly Sourced Fiber", Cost: 5000000, Description: "Directly source your Fiber Wi-Fi from your ISP. Expensive but lightning fast. (-20s cooldown)", Stat: "cooldown", Inc: -20, Available: true, Requirements: {subs: 1000000}},
+    {Name: "Professional Videos", Cost: 5000000, Description: "Hey now, you're an all-star.. now gimme your views. (-10s cooldown)", Stat: "cooldown", Inc: -10, Available: true, Requirements: {subs: 1000000}},
     // Niche
     {Name: "Trendy Squid is Trendy", Cost: 777777, Description: "Just be trendy™ (+10% viral chance)", Stat: "viralchance", Inc: 0.1, Available: true, Requirements: {timesviral: 7}},
 ]
