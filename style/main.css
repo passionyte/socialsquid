@@ -150,3 +150,18 @@
     border-radius: 20px;
     height: 5%;
 }
+
+footer { 
+    width: 100%; 
+    font-family:'Courier New', 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif; 
+    font-size: medium; 
+    display: block; 
+    position: fixed; 
+    bottom: 0; 
+    left: 0; 
+    background-color: lightgray; 
+    text-align: left; 
+    margin: auto; 
+    padding: 10px; 
+    font-weight: bold; 
+}
